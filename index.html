@@ -1,0 +1,1387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>UltraWiki — All-in-One</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+/* ========= THEME SYSTEM ========= */
+:root {
+  --bg: #f8f9fa;
+  --bg-alt: #ffffff;
+  --bg-sidebar: #ffffff;
+  --text-main: #202122;
+  --text-muted: #54595d;
+  --border: #c8ccd1;
+  --accent: #36c;
+  --accent-soft: #eaf3ff;
+  --link: #0645ad;
+  --danger: #b3261e;
+  --shadow-soft: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+/* Wikipedia classic */
+[data-theme="wikipedia"] {
+  --bg: #f8f9fa;
+  --bg-alt: #ffffff;
+  --bg-sidebar: #ffffff;
+  --text-main: #202122;
+  --text-muted: #54595d;
+  --border: #c8ccd1;
+  --accent: #36c;
+  --accent-soft: #eaf3ff;
+  --link: #0645ad;
+  --shadow-soft: 0 1px 3px rgba(0,0,0,0.06);
+}
+
+/* Modern light */
+[data-theme="modern"] {
+  --bg: #f3f4f6;
+  --bg-alt: #ffffff;
+  --bg-sidebar: #f9fafb;
+  --text-main: #111827;
+  --text-muted: #6b7280;
+  --border: #e5e7eb;
+  --accent: #2563eb;
+  --accent-soft: #dbeafe;
+  --link: #1d4ed8;
+}
+
+/* Dark */
+[data-theme="dark"] {
+  --bg: #020617;
+  --bg-alt: #020617;
+  --bg-sidebar: #020617;
+  --text-main: #e5e7eb;
+  --text-muted: #9ca3af;
+  --border: #1e293b;
+  --accent: #38bdf8;
+  --accent-soft: rgba(56,189,248,0.16);
+  --link: #7dd3fc;
+}
+
+/* Gamer / lore */
+[data-theme="gamer"] {
+  --bg: #050816;
+  --bg-alt: #020617;
+  --bg-sidebar: #020617;
+  --text-main: #e5e7eb;
+  --text-muted: #9ca3af;
+  --border: #111827;
+  --accent: #a855f7;
+  --accent-soft: rgba(168,85,247,0.16);
+  --link: #c4b5fd;
+}
+
+/* Fandom style */
+[data-theme="fandom"] {
+  --bg: #0f172a;
+  --bg-alt: #020617;
+  --bg-sidebar: #020617;
+  --text-main: #f9fafb;
+  --text-muted: #cbd5f5;
+  --border: #1e293b;
+  --accent: #22c55e;
+  --accent-soft: rgba(34,197,94,0.16);
+  --link: #6ee7b7;
+}
+
+/* Anime / bright */
+[data-theme="anime"] {
+  --bg: #fff7ed;
+  --bg-alt: #fffbeb;
+  --bg-sidebar: #fef3c7;
+  --text-main: #1f2933;
+  --text-muted: #6b7280;
+  --border: #fed7aa;
+  --accent: #f97316;
+  --accent-soft: #ffedd5;
+  --link: #ea580c;
+}
+
+/* Hybrid AI */
+[data-theme="hybrid"] {
+  --bg: radial-gradient(circle at top, #020617 0, #030712 40%, #020617 100%);
+  --bg-alt: rgba(15,23,42,0.98);
+  --bg-sidebar: rgba(15,23,42,0.96);
+  --text-main: #e5e7eb;
+  --text-muted: #9ca3af;
+  --border: #1f2937;
+  --accent: #22d3ee;
+  --accent-soft: rgba(34,211,238,0.18);
+  --link: #7dd3fc;
+}
+
+/* ========= GLOBAL ========= */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--bg);
+  color: var(--text-main);
+}
+
+a {
+  color: var(--link);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+/* ========= HEADER ========= */
+header {
+  background: var(--bg-alt);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  box-shadow: var(--shadow-soft);
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo {
+  font-family: "Linux Libertine", "Georgia", serif;
+  font-size: 24px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.logo-sub {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.search-wrap {
+  position: relative;
+}
+
+#searchBox {
+  padding: 6px 10px;
+  width: 260px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text-main);
+  font-size: 13px;
+}
+
+#searchResults {
+  position: absolute;
+  top: 30px;
+  right: 0;
+  width: 260px;
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-soft);
+  max-height: 220px;
+  overflow-y: auto;
+  display: none;
+  z-index: 30;
+}
+
+.search-item {
+  padding: 6px 8px;
+  font-size: 13px;
+  cursor: pointer;
+}
+.search-item:hover {
+  background: var(--accent-soft);
+}
+
+.select {
+  padding: 5px 8px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text-main);
+  font-size: 12px;
+}
+
+.header-btn {
+  padding: 5px 9px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--bg-alt);
+  font-size: 12px;
+  cursor: pointer;
+  color: var(--text-muted);
+}
+.header-btn:hover {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+/* Auth status */
+.auth-status {
+  font-size: 11px;
+  color: var(--text-muted);
+  max-width: 180px;
+}
+.auth-status strong {
+  color: var(--accent);
+}
+.auth-btn {
+  padding: 5px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--bg-alt);
+  font-size: 11px;
+  cursor: pointer;
+  color: var(--text-muted);
+}
+.auth-btn:hover {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+/* Scroll progress */
+#scrollProgress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 0%;
+  background: var(--accent);
+  z-index: 100;
+}
+
+/* ========= LAYOUT ========= */
+.wrapper {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr) 340px;
+  height: calc(100vh - 50px);
+}
+
+/* ========= SIDEBAR ========= */
+.sidebar {
+  background: var(--bg-sidebar);
+  border-right: 1px solid var(--border);
+  padding: 14px;
+  overflow-y: auto;
+}
+
+.sidebar-section-title {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 4px;
+  margin-bottom: 6px;
+}
+
+#pageList {
+  margin-bottom: 16px;
+}
+
+.page-item {
+  font-size: 13px;
+  padding: 5px 6px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.page-item:hover {
+  background: var(--accent-soft);
+}
+.page-item-title {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.page-badge {
+  font-size: 10px;
+  padding: 1px 5px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  margin-left: 5px;
+}
+
+/* Tools */
+.sidebar-tools a {
+  display: block;
+  font-size: 13px;
+  padding: 4px 2px;
+  color: var(--text-muted);
+}
+.sidebar-tools a:hover {
+  color: var(--accent);
+}
+
+/* ========= ARTICLE VIEW ========= */
+.article-view {
+  background: var(--bg-alt);
+  padding: 24px 26px 60px;
+  overflow-y: auto;
+  position: relative;
+}
+
+.article-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.article-view h1 {
+  margin: 0;
+  font-family: "Linux Libertine", "Georgia", serif;
+  font-size: 28px;
+}
+
+.article-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.article-actions button {
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  font-size: 11px;
+  padding: 3px 9px;
+  cursor: pointer;
+  color: var(--text-muted);
+}
+.article-actions button:hover {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.meta {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 6px;
+  margin-bottom: 4px;
+}
+
+.author-line {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+}
+
+.badges {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+.badge {
+  font-size: 11px;
+  border-radius: 999px;
+  padding: 2px 8px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+}
+
+.badge.featured {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.badge.stub {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+/* TOC */
+#toc {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  padding: 10px 12px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  max-width: 260px;
+  font-size: 13px;
+}
+#toc h3 {
+  margin: 0 0 6px;
+  font-size: 13px;
+}
+#toc ul {
+  margin: 0;
+  padding-left: 18px;
+}
+#toc li {
+  margin-bottom: 3px;
+}
+
+/* Article body */
+#viewBody {
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+#viewBody h2,
+#viewBody h3 {
+  font-family: "Linux Libertine", "Georgia", serif;
+  margin-top: 18px;
+  margin-bottom: 6px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 4px;
+}
+#viewBody p {
+  margin: 6px 0;
+}
+#viewBody ul {
+  margin: 6px 0 6px 22px;
+}
+#viewBody li {
+  margin-bottom: 3px;
+}
+blockquote {
+  margin: 8px 0;
+  padding-left: 10px;
+  border-left: 3px solid var(--border);
+  color: var(--text-muted);
+  font-style: italic;
+}
+code {
+  font-family: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 12px;
+  background: var(--accent-soft);
+  padding: 1px 4px;
+  border-radius: 4px;
+}
+
+/* ========= EDITOR (RIGHT) ========= */
+.editor {
+  background: var(--bg-sidebar);
+  border-left: 1px solid var(--border);
+  padding: 16px;
+  overflow-y: auto;
+}
+
+.editor h2 {
+  margin-top: 0;
+  font-size: 16px;
+}
+
+.editor label {
+  font-size: 12px;
+  font-weight: 600;
+  display: block;
+  margin-top: 8px;
+  margin-bottom: 3px;
+}
+
+.editor input,
+.editor textarea,
+.editor select {
+  width: 100%;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  background: var(--bg-alt);
+  color: var(--text-main);
+  font-size: 13px;
+  padding: 6px;
+}
+
+.editor textarea {
+  min-height: 150px;
+  resize: vertical;
+}
+
+.editor small {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.editor button {
+  margin-top: 10px;
+  width: 100%;
+  border-radius: 999px;
+  border: none;
+  background: var(--accent);
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px;
+  cursor: pointer;
+}
+.editor button[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.editor button:hover:not([disabled]) {
+  filter: brightness(1.1);
+}
+
+#statusText {
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* Floating new-page button */
+#fabNew {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  font-size: 13px;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  z-index: 50;
+}
+#fabNew:hover {
+  filter: brightness(1.1);
+}
+
+/* Back to top */
+#backTop {
+  position: fixed;
+  bottom: 62px;
+  right: 20px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--bg-alt);
+  color: var(--text-muted);
+  font-size: 11px;
+  padding: 6px 8px;
+  cursor: pointer;
+  display: none;
+}
+
+/* Preview tooltip */
+#previewCard {
+  position: fixed;
+  max-width: 280px;
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-soft);
+  padding: 8px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  display: none;
+  z-index: 40;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .wrapper {
+    grid-template-columns: 220px minmax(0, 1fr);
+    grid-template-rows: auto 260px;
+    grid-template-areas:
+      "sidebar article"
+      "editor editor";
+  }
+  .sidebar { grid-area: sidebar; }
+  .article-view { grid-area: article; }
+  .editor { grid-area: editor; height: 260px; }
+}
+
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .wrapper {
+    grid-template-columns: 1fr;
+    grid-template-rows: 220px auto 260px;
+    grid-template-areas:
+      "sidebar"
+      "article"
+      "editor";
+  }
+  .sidebar { height: 220px; }
+}
+</style>
+</head>
+<body data-theme="hybrid">
+<div id="scrollProgress"></div>
+
+<header>
+  <div class="header-left">
+    <div class="logo" onclick="location.search=''">UltraWiki</div>
+    <div class="logo-sub">Mini multi-theme wiki with login & page ownership</div>
+  </div>
+  <div class="header-right">
+    <div class="search-wrap">
+      <input id="searchBox" type="text" placeholder="Search pages…  ( / )" autocomplete="off">
+      <div id="searchResults"></div>
+    </div>
+    <select id="themeSelect" class="select">
+      <option value="hybrid">Hybrid AI</option>
+      <option value="wikipedia">Wikipedia</option>
+      <option value="modern">Modern</option>
+      <option value="dark">Dark</option>
+      <option value="gamer">Gamer / Lore</option>
+      <option value="fandom">Fandom</option>
+      <option value="anime">Anime</option>
+    </select>
+    <button class="header-btn" onclick="randomPage()" title="Random page (R)">🎲 Random</button>
+
+    <!-- Simple auth block -->
+    <div class="auth-status" id="authStatus">Not logged in</div>
+    <button class="auth-btn" id="loginBtn" onclick="promptLogin()">Log in</button>
+    <button class="auth-btn" id="signupBtn" onclick="promptSignup()">Sign up</button>
+    <button class="auth-btn" id="logoutBtn" onclick="logoutUser()" style="display:none;">Log out</button>
+  </div>
+</header>
+
+<div class="wrapper">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-section-title">Pages <span id="pageCount"></span></div>
+    <div id="pageList"></div>
+
+    <div class="sidebar-section-title">Tools</div>
+    <div class="sidebar-tools">
+      <a href="javascript:void(0)" onclick="scrollToTop()">Back to top</a>
+      <a href="javascript:void(0)" onclick="newPageFromSidebar()">Create page</a>
+      <a href="javascript:void(0)" onclick="randomPage()">Random article</a>
+      <a href="javascript:void(0)" onclick="showShortcutHint()">Keyboard shortcuts</a>
+    </div>
+  </aside>
+
+  <!-- ARTICLE -->
+  <main class="article-view" id="articleView">
+    <div class="article-title-row">
+      <h1 id="viewTitle">Welcome to UltraWiki</h1>
+      <div class="article-actions">
+        <button onclick="printArticle()">Print</button>
+        <button onclick="shareArticle()">Share</button>
+      </div>
+    </div>
+    <div class="meta" id="viewMeta">
+      A tiny multi-theme wiki. Log in to create and own pages.
+    </div>
+    <div class="author-line" id="authorLine">Author: <em>System</em></div>
+
+    <div class="badges" id="badgeRow">
+      <div class="badge featured">Featured</div>
+      <div class="badge">In-memory only</div>
+    </div>
+
+    <div id="toc"></div>
+
+    <div id="viewBody">
+      <p>
+        UltraWiki is a single-file, multi-theme wiki viewer and editor that talks to a FastAPI backend.
+        Now it supports <strong>login and page ownership</strong> using your FM Radio Login API.
+      </p>
+      <p>
+        You must <strong>log in</strong> to create or edit pages. When you publish a page, you become the
+        <strong>owner</strong>, and only you can edit it later. Other visitors can read it but not change it.
+      </p>
+      <h2>How to use</h2>
+      <ul>
+        <li>Use the login buttons in the header (or the sign-up button to make a new account).</li>
+        <li>Once logged in, type a title and content, then click <strong>Publish page</strong>.</li>
+        <li>You will be recorded as the page author. Only you can edit that page.</li>
+      </ul>
+      <h2>Keyboard shortcuts</h2>
+      <ul>
+        <li><code>/</code> – focus search</li>
+        <li><code>N</code> – new page</li>
+        <li><code>R</code> – random page</li>
+      </ul>
+    </div>
+  </main>
+
+  <!-- EDITOR -->
+  <aside class="editor">
+    <h2>Create / Edit Page</h2>
+
+    <label for="titleInput">Title</label>
+    <input id="titleInput" type="text" placeholder="e.g. Level 0 — The Lobby">
+
+    <label for="templateSelect">Template</label>
+    <select id="templateSelect">
+      <option value="">Blank</option>
+      <option value="bio">Biography</option>
+      <option value="game">Game / Map</option>
+      <option value="lore">Lore / Creature</option>
+      <option value="guide">Guide / Tutorial</option>
+    </select>
+
+    <label for="contentInput">Content (HTML allowed)</label>
+    <textarea id="contentInput" placeholder="<h2>Section</h2>
+<p>Write your content here…"></textarea>
+
+    <small id="editorHint">
+      Tip: Use &lt;h2&gt; for main sections and &lt;h3&gt; for subsections to auto-generate a table of contents.
+      You must be logged in to publish.
+    </small>
+
+    <button id="saveBtn">Publish page</button>
+    <div id="statusText">Ready.</div>
+  </aside>
+</div>
+
+<button id="fabNew" onclick="focusNewPage()">＋ New Page (N)</button>
+<button id="backTop" onclick="scrollToTop()">▲ Top</button>
+
+<div id="previewCard"></div>
+
+<script>
+/* ========= CONFIG ========= */
+
+/* Your WIKI API (FastAPI) base.
+   This is the one that has /api/list, /api/get/{slug}, /api/save
+   Change if needed. */
+const API = "http://localhost:8000/api";
+
+/* Your LOGIN API base (from Render) */
+const LOGIN_API = "https://login-api-iwy1.onrender.com";
+
+/* ========= STATE ========= */
+let allPages = [];
+let currentSlug = null;
+let currentAuthor = null;
+let currentUser = null;
+let currentUserBanned = false;
+
+/* ========= THEME HANDLING ========= */
+const themeSelect = document.getElementById("themeSelect");
+themeSelect.addEventListener("change", () => {
+  document.body.setAttribute("data-theme", themeSelect.value);
+  localStorage.setItem("ultrawiki_theme", themeSelect.value);
+});
+
+(function initTheme() {
+  const saved = localStorage.getItem("ultrawiki_theme");
+  if (saved) {
+    document.body.setAttribute("data-theme", saved);
+    themeSelect.value = saved;
+  }
+})();
+
+/* ========= SIMPLE AUTH UI ========= */
+const authStatusEl = document.getElementById("authStatus");
+const loginBtnEl = document.getElementById("loginBtn");
+const signupBtnEl = document.getElementById("signupBtn");
+const logoutBtnEl = document.getElementById("logoutBtn");
+const saveBtnEl = document.getElementById("saveBtn");
+const editorHintEl = document.getElementById("editorHint");
+
+function updateAuthUI() {
+  if (!currentUser) {
+    authStatusEl.textContent = "Not logged in";
+    loginBtnEl.style.display = "inline-block";
+    signupBtnEl.style.display = "inline-block";
+    logoutBtnEl.style.display = "none";
+    saveBtnEl.disabled = true;
+    editorHintEl.textContent = "Tip: You must be logged in to publish pages.";
+  } else if (currentUserBanned) {
+    authStatusEl.innerHTML = `<span style="color: var(--danger);">BANNED: ${currentUser}</span>`;
+    loginBtnEl.style.display = "inline-block";
+    signupBtnEl.style.display = "inline-block";
+    logoutBtnEl.style.display = "inline-block";
+    saveBtnEl.disabled = true;
+    editorHintEl.textContent = "Your account is banned. You cannot publish pages.";
+  } else {
+    authStatusEl.innerHTML = `Logged in as <strong>${currentUser}</strong>`;
+    loginBtnEl.style.display = "none";
+    signupBtnEl.style.display = "none";
+    logoutBtnEl.style.display = "inline-block";
+    saveBtnEl.disabled = false;
+    editorHintEl.textContent = "You are logged in. You can create and edit pages you own.";
+  }
+}
+
+/* ===== AUTH HELPERS ===== */
+async function loginRequest(username, password) {
+  const body = new URLSearchParams();
+  body.append("username", username);
+  body.append("password", password);
+
+  const res = await fetch(`${LOGIN_API}/login`, {
+    method: "POST",
+    body
+  });
+
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.detail || `Login failed (${res.status})`);
+  }
+
+  return res.json();
+}
+
+async function signupRequest(username, password) {
+  const body = new URLSearchParams();
+  body.append("username", username);
+  body.append("password", password);
+
+  const res = await fetch(`${LOGIN_API}/signup`, {
+    method: "POST",
+    body
+  });
+
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.detail || `Signup failed (${res.status})`);
+  }
+
+  return res.json();
+}
+
+async function logoutRequest() {
+  const res = await fetch(`${LOGIN_API}/logout`, { method: "POST" });
+  if (!res.ok) return;
+  return res.json().catch(() => ({}));
+}
+
+/* ===== AUTH UI ACTIONS ===== */
+async function promptLogin() {
+  const username = prompt("Username:");
+  if (!username) return;
+  const password = prompt("Password:");
+  if (!password) return;
+
+  try {
+    const data = await loginRequest(username, password);
+    currentUser = data.user || username;
+    currentUserBanned = !!data.banned;
+
+    // store for auto-login (same as your FM Radio logic style)
+    localStorage.setItem("ultrawiki_user", username);
+    localStorage.setItem("ultrawiki_pass", password);
+
+    if (currentUserBanned) {
+      alert("You are banned on this system. You can view pages but not edit.");
+    } else {
+      alert(`Welcome back, ${currentUser}!`);
+    }
+
+    updateAuthUI();
+    // Re-check current page ownership if any page is open
+    enforceOwnershipOnEditor();
+  } catch (err) {
+    alert(err.message);
+  }
+}
+
+async function promptSignup() {
+  const username = prompt("Choose a username:");
+  if (!username) return;
+  const password = prompt("Choose a password:");
+  if (!password) return;
+
+  try {
+    const data = await signupRequest(username, password);
+    alert(data.message || "Account created.");
+
+    // Auto-login after signup
+    const loginData = await loginRequest(username, password);
+    currentUser = loginData.user || username;
+    currentUserBanned = !!loginData.banned;
+
+    localStorage.setItem("ultrawiki_user", username);
+    localStorage.setItem("ultrawiki_pass", password);
+
+    updateAuthUI();
+    enforceOwnershipOnEditor();
+  } catch (err) {
+    alert(err.message);
+  }
+}
+
+async function logoutUser() {
+  try {
+    await logoutRequest();
+  } catch {}
+  currentUser = null;
+  currentUserBanned = false;
+  localStorage.removeItem("ultrawiki_user");
+  localStorage.removeItem("ultrawiki_pass");
+  updateAuthUI();
+  enforceOwnershipOnEditor();
+}
+
+/* Auto-login if creds stored */
+async function tryAutoLogin() {
+  const storedUser = localStorage.getItem("ultrawiki_user");
+  const storedPass = localStorage.getItem("ultrawiki_pass");
+  if (!storedUser || !storedPass) {
+    updateAuthUI();
+    return;
+  }
+  try {
+    const data = await loginRequest(storedUser, storedPass);
+    currentUser = data.user || storedUser;
+    currentUserBanned = !!data.banned;
+  } catch {
+    currentUser = null;
+    currentUserBanned = false;
+  }
+  updateAuthUI();
+}
+
+/* ========= API HELPERS FOR WIKI ========= */
+async function apiGet(path) {
+  const res = await fetch(API + path);
+  if (!res.ok) throw new Error("API error: " + res.status);
+  return res.json();
+}
+async function apiPost(path, body) {
+  const res = await fetch(API + path, {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify(body)
+  });
+  if (!res.ok) throw new Error("API error: " + res.status);
+  return res.json();
+}
+
+/* ========= LOAD PAGES LIST ========= */
+async function loadPages() {
+  try {
+    const data = await apiGet("/list");
+    allPages = data.pages || [];
+    renderPageList();
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+function renderPageList(filter = "") {
+  const listEl = document.getElementById("pageList");
+  const countEl = document.getElementById("pageCount");
+  listEl.innerHTML = "";
+
+  let pages = allPages;
+  const term = filter.trim().toLowerCase();
+  if (term) {
+    pages = allPages.filter(p => p.title.toLowerCase().includes(term));
+  }
+
+  countEl.textContent = "(" + allPages.length + ")";
+
+  if (!pages.length) {
+    listEl.innerHTML = "<div style='font-size:12px;color:var(--text-muted);'>No pages yet. Log in and create one →</div>";
+    return;
+  }
+
+  pages.forEach(p => {
+    const item = document.createElement("div");
+    item.className = "page-item";
+    item.dataset.slug = p.slug;
+
+    const titleSpan = document.createElement("div");
+    titleSpan.className = "page-item-title";
+    titleSpan.textContent = p.title;
+
+    const badgeSpan = document.createElement("span");
+    badgeSpan.className = "page-badge";
+    badgeSpan.textContent = p.updated ? "Updated" : "New";
+
+    item.appendChild(titleSpan);
+    item.appendChild(badgeSpan);
+
+    item.addEventListener("click", () => openPage(p.slug));
+    item.addEventListener("mouseenter", (e) => showPreview(p.slug, e));
+    item.addEventListener("mouseleave", hidePreview);
+
+    listEl.appendChild(item);
+  });
+}
+
+/* ========= OPEN PAGE ========= */
+async function openPage(slug) {
+  try {
+    const data = await apiGet("/get/" + encodeURIComponent(slug));
+    const page = data.page;
+    currentSlug = page.slug;
+    currentAuthor = page.author || null;
+
+    document.getElementById("viewTitle").textContent = page.title;
+    document.getElementById("viewMeta").textContent = "Last updated: " + (page.updated || "Unknown");
+
+    const authorLineEl = document.getElementById("authorLine");
+    authorLineEl.innerHTML = "Author: <em>" + (currentAuthor || "Unknown") + "</em>";
+
+    // Put content in body
+    const bodyEl = document.getElementById("viewBody");
+    bodyEl.innerHTML = page.content || "<p>(Empty page)</p>";
+
+    // Update word count / read time
+    updateMetaInfo();
+
+    // Generate TOC
+    generateTOC();
+
+    // Fill editor with this page for editing
+    document.getElementById("titleInput").value = page.title;
+    document.getElementById("contentInput").value = page.content;
+
+    // Enforce ownership on editor
+    enforceOwnershipOnEditor();
+
+    // Push state into URL
+    if (history && history.pushState) {
+      history.pushState({slug}, "", "?page=" + encodeURIComponent(slug));
+    }
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+/* Enforce: only author can edit */
+function enforceOwnershipOnEditor() {
+  const contentInput = document.getElementById("contentInput");
+  const titleInput = document.getElementById("titleInput");
+  const statusEl = document.getElementById("statusText");
+
+  // Default: editor follows auth state only
+  if (!currentSlug || !currentAuthor) {
+    // New page
+    if (!currentUser || currentUserBanned) {
+      saveBtnEl.disabled = true;
+      contentInput.readOnly = false;
+      titleInput.readOnly = false;
+      statusEl.textContent = currentUserBanned
+        ? "You are banned and cannot publish."
+        : "Log in to publish this as a new page.";
+    } else {
+      saveBtnEl.disabled = false;
+      contentInput.readOnly = false;
+      titleInput.readOnly = false;
+      statusEl.textContent = "You are creating a new page as " + currentUser + ".";
+    }
+    return;
+  }
+
+  // Existing page
+  if (!currentUser || currentUserBanned) {
+    contentInput.readOnly = true;
+    titleInput.readOnly = true;
+    saveBtnEl.disabled = true;
+    statusEl.textContent = currentUserBanned
+      ? "You are banned. You can view pages but cannot edit."
+      : "Read-only: log in as the author to edit this page.";
+  } else if (currentUser !== currentAuthor) {
+    contentInput.readOnly = true;
+    titleInput.readOnly = true;
+    saveBtnEl.disabled = true;
+    statusEl.textContent = `Read-only: this page belongs to ${currentAuthor}. You are logged in as ${currentUser}.`;
+  } else {
+    contentInput.readOnly = false;
+    titleInput.readOnly = false;
+    saveBtnEl.disabled = false;
+    statusEl.textContent = "You are the owner of this page. You can edit and publish changes.";
+  }
+}
+
+/* ========= META: WORD COUNT & READ TIME ========= */
+function updateMetaInfo() {
+  const bodyText = document.getElementById("viewBody").innerText || "";
+  const words = bodyText.trim().split(/\s+/).filter(Boolean);
+  const wordCount = words.length;
+  const minutes = Math.max(1, Math.round(wordCount / 200)); // ~200 wpm
+
+  const metaEl = document.getElementById("viewMeta");
+  metaEl.textContent += ` · ${wordCount} words · ~${minutes} min read`;
+}
+
+/* ========= TOC GENERATION ========= */
+function generateTOC() {
+  const bodyEl = document.getElementById("viewBody");
+  const tocEl = document.getElementById("toc");
+  const headers = bodyEl.querySelectorAll("h2, h3");
+
+  if (!headers.length) {
+    tocEl.innerHTML = "";
+    return;
+  }
+
+  let html = "<h3>Contents</h3><ul>";
+  headers.forEach((h, i) => {
+    const id = "sec-" + i;
+    h.id = id;
+    html += `<li><a href="#${id}">${h.innerText}</a></li>`;
+  });
+  html += "</ul>";
+  tocEl.innerHTML = html;
+}
+
+/* ========= SAVE PAGE ========= */
+async function savePage() {
+  const title = document.getElementById("titleInput").value.trim();
+  const content = document.getElementById("contentInput").value.trim();
+  const statusEl = document.getElementById("statusText");
+
+  if (!currentUser) {
+    statusEl.textContent = "You must be logged in to publish.";
+    alert("Log in first.");
+    return;
+  }
+  if (currentUserBanned) {
+    statusEl.textContent = "You are banned and cannot publish.";
+    alert("Your account is banned.");
+    return;
+  }
+  if (!title || !content) {
+    statusEl.textContent = "Title and content required.";
+    return;
+  }
+
+  // Ownership enforcement on client side
+  if (currentSlug && currentAuthor && currentAuthor !== currentUser) {
+    statusEl.textContent = "You are not the owner of this page.";
+    alert("Only the original author can edit this page.");
+    return;
+  }
+
+  statusEl.textContent = "Saving…";
+
+  try {
+    /* IMPORTANT:
+       Backend should accept author (and optionally slug) like:
+       POST /api/save { "title": "...", "content": "...", "author": "username", "slug": currentSlug }
+       Adjust your FastAPI code accordingly.
+    */
+    const payload = {
+      title,
+      content,
+      author: currentUser
+    };
+    if (currentSlug) {
+      payload.slug = currentSlug;
+    }
+
+    const data = await apiPost("/save", payload);
+    statusEl.textContent = "Saved!";
+    await loadPages();
+    if (data.slug) {
+      openPage(data.slug);
+    }
+  } catch (err) {
+    console.error(err);
+    statusEl.textContent = "Error while saving.";
+  }
+}
+
+/* ========= TEMPLATES ========= */
+const templateSelectEl = document.getElementById("templateSelect");
+templateSelectEl.addEventListener("change", () => {
+  const val = templateSelectEl.value;
+  if (!val) return;
+  if (!confirm("Replace content with template?")) return;
+
+  let tpl = "";
+  if (val === "bio") {
+    tpl = `<h2>Early Life</h2>
+<p>Write about the person's background, where they were born, and key early experiences.</p>
+<h2>Career</h2>
+<p>Describe the main work, achievements, and milestones.</p>
+<h2>Legacy</h2>
+<p>Explain why this person matters and how they are remembered.</p>`;
+  } else if (val === "game") {
+    tpl = `<h2>Overview</h2>
+<p>Describe what the game or map is, its genre, and main objective.</p>
+<h2>Gameplay</h2>
+<ul>
+  <li>Core mechanics</li>
+  <li>Controls</li>
+  <li>Progression systems</li>
+</ul>
+<h2>Maps / Levels</h2>
+<p>Detail key locations, maps, or regions.</p>`;
+  } else if (val === "lore") {
+    tpl = `<h2>Origin</h2>
+<p>Explain where this creature, character, or entity comes from.</p>
+<h2>Appearance</h2>
+<p>Describe what it looks like in detail.</p>
+<h2>Abilities</h2>
+<ul>
+  <li>Ability one</li>
+  <li>Ability two</li>
+</ul>
+<h2>Weaknesses</h2>
+<p>Mention known weaknesses or limits.</p>`;
+  } else if (val === "guide") {
+    tpl = `<h2>Introduction</h2>
+<p>Briefly explain what this guide helps with.</p>
+<h2>Steps</h2>
+<ol>
+  <li>Step one</li>
+  <li>Step two</li>
+  <li>Step three</li>
+</ol>
+<h2>Tips</h2>
+<ul>
+  <li>Tip 1</li>
+  <li>Tip 2</li>
+</ul>`;
+  }
+  document.getElementById("contentInput").value = tpl;
+});
+
+/* ========= SEARCH ========= */
+const searchBox = document.getElementById("searchBox");
+const searchResultsEl = document.getElementById("searchResults");
+
+searchBox.addEventListener("input", () => {
+  const q = searchBox.value.trim().toLowerCase();
+  renderPageList(q);
+  updateSearchResults(q);
+});
+
+function updateSearchResults(q) {
+  if (!q) {
+    searchResultsEl.style.display = "none";
+    return;
+  }
+  const matches = allPages.filter(p => p.title.toLowerCase().includes(q));
+  if (!matches.length) {
+    searchResultsEl.style.display = "none";
+    return;
+  }
+  let html = "";
+  matches.forEach(p => {
+    html += `<div class="search-item" onclick="openPage('${p.slug}');hideSearchResults();">${p.title}</div>`;
+  });
+  searchResultsEl.innerHTML = html;
+  searchResultsEl.style.display = "block";
+}
+function hideSearchResults() {
+  searchResultsEl.style.display = "none";
+}
+
+/* ========= RANDOM PAGE ========= */
+function randomPage() {
+  if (!allPages.length) return;
+  const rand = allPages[Math.floor(Math.random() * allPages.length)];
+  openPage(rand.slug);
+}
+
+/* ========= PREVIEW ON HOVER ========= */
+const previewCard = document.getElementById("previewCard");
+let previewTimeout = null;
+
+async function showPreview(slug, evt) {
+  clearTimeout(previewTimeout);
+  previewTimeout = setTimeout(async () => {
+    try {
+      const data = await apiGet("/get/" + encodeURIComponent(slug));
+      const page = data.page;
+      const txt = (page.content || "").replace(/<[^>]+>/g,' ').slice(0,160);
+      previewCard.innerHTML = `<strong>${page.title}</strong><br><span style="color:var(--text-muted);font-size:11px;">${page.updated || ""}</span><br><br>${txt}…`;
+      previewCard.style.display = "block";
+      const rect = evt.target.getBoundingClientRect();
+      previewCard.style.top = rect.top + window.scrollY + "px";
+      previewCard.style.left = rect.right + 8 + "px";
+    } catch (err) {
+      console.error(err);
+    }
+  }, 250);
+}
+function hidePreview() {
+  clearTimeout(previewTimeout);
+  previewCard.style.display = "none";
+}
+
+/* ========= SCROLL STUFF ========= */
+const articleViewEl = document.getElementById("articleView");
+const scrollProgressEl = document.getElementById("scrollProgress");
+const backTopBtn = document.getElementById("backTop");
+
+articleViewEl.addEventListener("scroll", () => {
+  const scrollTop = articleViewEl.scrollTop;
+  const max = articleViewEl.scrollHeight - articleViewEl.clientHeight;
+  const p = max > 0 ? (scrollTop / max) * 100 : 0;
+  scrollProgressEl.style.width = p + "%";
+
+  if (scrollTop > 200) backTopBtn.style.display = "block";
+  else backTopBtn.style.display = "none";
+});
+
+function scrollToTop() {
+  articleViewEl.scrollTo({top: 0, behavior: "smooth"});
+}
+
+/* ========= MISC ACTIONS ========= */
+function printArticle() {
+  window.print();
+}
+function shareArticle() {
+  if (!currentSlug) return;
+  const url = location.origin + location.pathname + "?page=" + encodeURIComponent(currentSlug);
+  navigator.clipboard.writeText(url).then(() => {
+    alert("Link copied: " + url);
+  });
+}
+function focusNewPage() {
+  currentSlug = null;
+  currentAuthor = null;
+  document.getElementById("titleInput").value = "";
+  document.getElementById("contentInput").value = "";
+  document.getElementById("viewTitle").textContent = "New page (unsaved)";
+  document.getElementById("viewBody").innerHTML = "<p>Start writing your new page in the editor on the right.</p>";
+  document.getElementById("viewMeta").textContent = "Unsaved draft.";
+  document.getElementById("authorLine").innerHTML = "Author: <em>" + (currentUser || "Unknown") + "</em>";
+  generateTOC();
+  enforceOwnershipOnEditor();
+  document.getElementById("titleInput").focus();
+}
+function newPageFromSidebar() {
+  focusNewPage();
+}
+function showShortcutHint() {
+  alert("Shortcuts:\n\n/ – focus search\nN – new page\nR – random page");
+}
+
+/* ========= KEYBOARD SHORTCUTS ========= */
+document.addEventListener("keydown", (e) => {
+  if (e.key === "/") {
+    e.preventDefault();
+    searchBox.focus();
+  } else if (e.key === "n" || e.key === "N") {
+    focusNewPage();
+  } else if (e.key === "r" || e.key === "R") {
+    randomPage();
+  }
+});
+
+/* ========= SAVE BUTTON ========= */
+saveBtnEl.addEventListener("click", savePage);
+
+/* ========= HANDLE ?page= IN URL ========= */
+async function handleInitialPage() {
+  await tryAutoLogin();
+  await loadPages();
+  const params = new URLSearchParams(location.search);
+  const slug = params.get("page");
+  if (slug) {
+    openPage(slug);
+  } else {
+    enforceOwnershipOnEditor();
+  }
+}
+
+/* INIT */
+handleInitialPage();
+</script>
+</body>
+</html>
