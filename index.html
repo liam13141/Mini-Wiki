@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>UltraWiki — All-in-One</title>
+<title>UltraWiki V3 — Everything Mode</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -18,44 +18,50 @@
   --accent-soft: #eaf3ff;
   --link: #0645ad;
   --danger: #b3261e;
-  --shadow-soft: 0 1px 3px rgba(0,0,0,0.08);
+  --shadow-soft: 0 8px 24px rgba(15,23,42,0.15);
+  --shadow-strong: 0 18px 45px rgba(15,23,42,0.45);
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --blur-header: 14px;
+  --transition-fast: 0.16s ease-out;
+  --transition-med: 0.26s ease;
 }
 
 /* Wikipedia classic */
 [data-theme="wikipedia"] {
   --bg: #f8f9fa;
   --bg-alt: #ffffff;
-  --bg-sidebar: #ffffff;
+  --bg-sidebar: #fbfcfd;
   --text-main: #202122;
   --text-muted: #54595d;
   --border: #c8ccd1;
   --accent: #36c;
   --accent-soft: #eaf3ff;
   --link: #0645ad;
-  --shadow-soft: 0 1px 3px rgba(0,0,0,0.06);
 }
 
 /* Modern light */
 [data-theme="modern"] {
-  --bg: #f3f4f6;
-  --bg-alt: #ffffff;
-  --bg-sidebar: #f9fafb;
-  --text-main: #111827;
+  --bg: radial-gradient(circle at top left, #e0f2fe 0, #f9fafb 35%, #eef2ff 100%);
+  --bg-alt: rgba(255,255,255,0.96);
+  --bg-sidebar: rgba(255,255,255,0.94);
+  --text-main: #0f172a;
   --text-muted: #6b7280;
-  --border: #e5e7eb;
+  --border: rgba(148,163,184,0.4);
   --accent: #2563eb;
-  --accent-soft: #dbeafe;
+  --accent-soft: rgba(37,99,235,0.12);
   --link: #1d4ed8;
 }
 
 /* Dark */
 [data-theme="dark"] {
-  --bg: #020617;
-  --bg-alt: #020617;
-  --bg-sidebar: #020617;
+  --bg: radial-gradient(circle at top, #020617 0, #020617 40%, #000 100%);
+  --bg-alt: rgba(15,23,42,0.96);
+  --bg-sidebar: rgba(15,23,42,0.96);
   --text-main: #e5e7eb;
   --text-muted: #9ca3af;
-  --border: #1e293b;
+  --border: #1f2937;
   --accent: #38bdf8;
   --accent-soft: rgba(56,189,248,0.16);
   --link: #7dd3fc;
@@ -63,9 +69,9 @@
 
 /* Gamer / lore */
 [data-theme="gamer"] {
-  --bg: #050816;
-  --bg-alt: #020617;
-  --bg-sidebar: #020617;
+  --bg: radial-gradient(circle at top, #020617 0, #020617 35%, #020617 100%);
+  --bg-alt: rgba(15,23,42,0.98);
+  --bg-sidebar: rgba(15,23,42,0.98);
   --text-main: #e5e7eb;
   --text-muted: #9ca3af;
   --border: #111827;
@@ -74,14 +80,14 @@
   --link: #c4b5fd;
 }
 
-/* Fandom style */
+/* Fandom */
 [data-theme="fandom"] {
-  --bg: #0f172a;
+  --bg: radial-gradient(circle at top, #020617 0, #020617 35%, #0f172a 100%);
   --bg-alt: #020617;
   --bg-sidebar: #020617;
   --text-main: #f9fafb;
   --text-muted: #cbd5f5;
-  --border: #1e293b;
+  --border: #1f2937;
   --accent: #22c55e;
   --accent-soft: rgba(34,197,94,0.16);
   --link: #6ee7b7;
@@ -89,68 +95,105 @@
 
 /* Anime / bright */
 [data-theme="anime"] {
-  --bg: #fff7ed;
-  --bg-alt: #fffbeb;
-  --bg-sidebar: #fef3c7;
+  --bg: radial-gradient(circle at top, #fffbeb 0, #fff7ed 45%, #fef2f2 100%);
+  --bg-alt: rgba(255,255,255,0.96);
+  --bg-sidebar: rgba(255,252,232,0.98);
   --text-main: #1f2933;
   --text-muted: #6b7280;
   --border: #fed7aa;
   --accent: #f97316;
-  --accent-soft: #ffedd5;
+  --accent-soft: rgba(249,115,22,0.12);
   --link: #ea580c;
 }
 
 /* Hybrid AI */
 [data-theme="hybrid"] {
-  --bg: radial-gradient(circle at top, #020617 0, #030712 40%, #020617 100%);
-  --bg-alt: rgba(15,23,42,0.98);
-  --bg-sidebar: rgba(15,23,42,0.96);
+  --bg: radial-gradient(circle at top, #020617 0, #030712 35%, #020617 100%);
+  --bg-alt: rgba(15,23,42,0.96);
+  --bg-sidebar: rgba(15,23,42,0.9);
   --text-main: #e5e7eb;
   --text-muted: #9ca3af;
-  --border: #1f2937;
+  --border: rgba(30,64,175,0.85);
   --accent: #22d3ee;
   --accent-soft: rgba(34,211,238,0.18);
   --link: #7dd3fc;
 }
 
 /* ========= GLOBAL ========= */
-* {
-  box-sizing: border-box;
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
 }
 
 body {
-  margin: 0;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   background: var(--bg);
   color: var(--text-main);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  transition: background 0.35s ease, color 0.35s ease;
 }
 
 a {
   color: var(--link);
   text-decoration: none;
+  transition: color var(--transition-fast);
 }
-a:hover {
-  text-decoration: underline;
+a:hover { text-decoration: underline; }
+
+body.loaded .wrapper,
+body.loaded header {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+body.auth-open {
+  overflow: hidden;
 }
 
 /* ========= HEADER ========= */
 header {
-  background: var(--bg-alt);
-  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 40;
   padding: 10px 18px;
+  border-bottom: 1px solid rgba(148,163,184,0.35);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  position: sticky;
-  top: 0;
-  z-index: 20;
-  box-shadow: var(--shadow-soft);
+  gap: 10px;
+  backdrop-filter: blur(var(--blur-header));
+  background: linear-gradient(
+    to bottom,
+    rgba(15,23,42,0.94),
+    rgba(15,23,42,0.85),
+    rgba(15,23,42,0.78)
+  );
+  box-shadow: 0 18px 45px rgba(15,23,42,0.45);
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity var(--transition-med), transform var(--transition-med);
+}
+[data-theme="wikipedia"] header {
+  background: linear-gradient(to bottom, rgba(255,255,255,0.97), rgba(249,250,251,0.98));
+  box-shadow: 0 10px 35px rgba(148,163,184,0.35);
+}
+[data-theme="modern"] header {
+  background: linear-gradient(to right, rgba(248,250,252,0.96), rgba(239,246,255,0.98));
+}
+[data-theme="anime"] header {
+  background: linear-gradient(to right, rgba(255,247,237,0.96), rgba(255,241,242,0.98));
 }
 
 .header-left {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .logo {
@@ -158,12 +201,46 @@ header {
   font-size: 24px;
   font-weight: 700;
   cursor: pointer;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(148,163,184,0.35);
+  background: radial-gradient(circle at top left, rgba(15,23,42,0.9), rgba(15,23,42,0.5));
+  color: #e5e7eb;
+  box-shadow: 0 10px 25px rgba(15,23,42,0.55);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  letter-spacing: 0.02em;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast);
+}
+.logo::before { content: "🌀"; font-size: 18px; }
+.logo:hover {
+  transform: translateY(-1px) scale(1.01);
+  box-shadow: var(--shadow-strong);
+  border-color: var(--accent);
 }
 
 .logo-sub {
   font-size: 11px;
   color: var(--text-muted);
+  max-width: 230px;
 }
+
+.theme-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 2px;
+}
+.theme-chip {
+  font-size: 10px;
+  padding: 2px 7px;
+  border-radius: 999px;
+  border: 1px solid rgba(148,163,184,0.35);
+  color: var(--text-muted);
+  background: rgba(15,23,42,0.6);
+}
+[data-theme="wikipedia"] .theme-chip { background: rgba(255,255,255,0.9); }
 
 .header-right {
   display: flex;
@@ -171,87 +248,291 @@ header {
   gap: 10px;
 }
 
-.search-wrap {
-  position: relative;
-}
+/* Search */
+.search-wrap { position: relative; }
 
 #searchBox {
-  padding: 6px 10px;
+  padding: 7px 10px;
   width: 260px;
-  border-radius: 4px;
-  border: 1px solid var(--border);
-  background: var(--bg);
+  border-radius: 999px;
+  border: 1px solid rgba(148,163,184,0.5);
+  background: radial-gradient(circle at top, rgba(15,23,42,0.96), rgba(15,23,42,0.9));
   color: var(--text-main);
   font-size: 13px;
+  outline: none;
+  box-shadow: 0 6px 20px rgba(15,23,42,0.5);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
+}
+[data-theme="wikipedia"] #searchBox,
+[data-theme="modern"] #searchBox,
+[data-theme="anime"] #searchBox {
+  background: rgba(255,255,255,0.96);
+  box-shadow: var(--shadow-soft);
+}
+#searchBox::placeholder { color: var(--text-muted); }
+#searchBox:focus {
+  border-color: var(--accent);
+  box-shadow: var(--shadow-strong);
+  transform: translateY(-1px);
 }
 
 #searchResults {
   position: absolute;
-  top: 30px;
+  top: 34px;
   right: 0;
-  width: 260px;
+  width: 280px;
   background: var(--bg-alt);
   border: 1px solid var(--border);
   box-shadow: var(--shadow-soft);
-  max-height: 220px;
+  max-height: 260px;
   overflow-y: auto;
   display: none;
   z-index: 30;
+  border-radius: var(--radius-md);
+  padding: 4px 0;
 }
-
 .search-item {
-  padding: 6px 8px;
+  padding: 7px 10px;
   font-size: 13px;
   cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
-.search-item:hover {
-  background: var(--accent-soft);
-}
-
-.select {
-  padding: 5px 8px;
-  border-radius: 4px;
-  border: 1px solid var(--border);
-  background: var(--bg);
-  color: var(--text-main);
-  font-size: 12px;
-}
-
-.header-btn {
-  padding: 5px 9px;
+.search-item span.search-pill {
+  font-size: 10px;
+  padding: 1px 6px;
   border-radius: 999px;
-  border: 1px solid var(--border);
-  background: var(--bg-alt);
-  font-size: 12px;
-  cursor: pointer;
+  border: 1px solid rgba(148,163,184,0.4);
   color: var(--text-muted);
 }
-.header-btn:hover {
-  background: var(--accent-soft);
-  color: var(--accent);
+.search-item:hover { background: var(--accent-soft); }
+
+.select {
+  padding: 6px 9px;
+  border-radius: 999px;
+  border: 1px solid rgba(148,163,184,0.6);
+  background: rgba(15,23,42,0.96);
+  color: #e5e7eb;
+  font-size: 12px;
+  outline: none;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(15,23,42,0.6);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
+}
+[data-theme="wikipedia"] .select,
+[data-theme="modern"] .select,
+[data-theme="anime"] .select {
+  background: rgba(255,255,255,0.98);
+  color: var(--text-main);
+}
+.select:hover {
+  border-color: var(--accent);
+  box-shadow: var(--shadow-strong);
+  transform: translateY(-1px);
 }
 
-/* Auth status */
+.header-btn,
+.auth-btn {
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(148,163,184,0.6);
+  background: rgba(15,23,42,0.96);
+  font-size: 12px;
+  cursor: pointer;
+  color: #e5e7eb;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  box-shadow: 0 6px 20px rgba(15,23,42,0.6);
+  transition: background var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast);
+}
+[data-theme="wikipedia"] .header-btn,
+[data-theme="modern"] .header-btn,
+[data-theme="anime"] .header-btn,
+[data-theme="wikipedia"] .auth-btn,
+[data-theme="modern"] .auth-btn,
+[data-theme="anime"] .auth-btn {
+  background: rgba(255,255,255,0.98);
+  color: var(--text-main);
+}
+.header-btn:hover,
+.auth-btn:hover {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-strong);
+}
 .auth-status {
   font-size: 11px;
   color: var(--text-muted);
   max-width: 180px;
 }
-.auth-status strong {
-  color: var(--accent);
+.auth-status strong { color: var(--accent); }
+
+/* ========= AUTH MODAL (CARD LOGIN/SIGNUP) ========= */
+.auth-modal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 120;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease-out;
 }
-.auth-btn {
-  padding: 5px 8px;
-  border-radius: 999px;
-  border: 1px solid var(--border);
-  background: var(--bg-alt);
+.auth-modal.visible {
+  pointer-events: auto;
+  opacity: 1;
+}
+.auth-backdrop {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top, rgba(15,23,42,0.92), rgba(0,0,0,0.96));
+  backdrop-filter: blur(18px);
+}
+.auth-card {
+  position: relative;
+  width: 100%;
+  max-width: 380px;
+  border-radius: 20px;
+  padding: 18px 18px 16px;
+  background: radial-gradient(circle at top left, rgba(15,23,42,0.98), rgba(15,23,42,0.94));
+  border: 1px solid rgba(148,163,184,0.7);
+  box-shadow: 0 24px 60px rgba(15,23,42,0.85);
+  color: #e5e7eb;
+  transform: translateY(8px) scale(0.96);
+  opacity: 0;
+  transition: transform 0.2s ease-out, opacity 0.2s ease-out;
+}
+.auth-modal.visible .auth-card {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+.auth-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+}
+.auth-title {
+  font-size: 17px;
+  font-weight: 600;
+}
+.auth-sub {
   font-size: 11px;
-  cursor: pointer;
-  color: var(--text-muted);
+  color: #9ca3af;
 }
-.auth-btn:hover {
-  background: var(--accent-soft);
-  color: var(--accent);
+.auth-close-btn {
+  border: none;
+  background: rgba(15,23,42,0.9);
+  border-radius: 999px;
+  padding: 4px 7px;
+  cursor: pointer;
+  color: #9ca3af;
+  font-size: 12px;
+  transition: background 0.15s, transform 0.15s;
+}
+.auth-close-btn:hover {
+  background: rgba(30,64,175,0.9);
+  color: #e5e7eb;
+  transform: translateY(-1px);
+}
+.auth-tabs-row {
+  display: flex;
+  margin-top: 12px;
+  border-radius: 999px;
+  padding: 2px;
+  background: rgba(15,23,42,0.95);
+  border: 1px solid rgba(148,163,184,0.5);
+}
+.auth-tab {
+  flex: 1;
+  border-radius: 999px;
+  border: none;
+  background: transparent;
+  color: #9ca3af;
+  font-size: 12px;
+  padding: 6px 0;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, transform 0.15s, box-shadow 0.15s;
+}
+.auth-tab.active {
+  background: radial-gradient(circle at top, rgba(37,99,235,0.95), rgba(30,64,175,0.9));
+  color: #e5e7eb;
+  box-shadow: 0 10px 24px rgba(30,64,175,0.85);
+  transform: translateY(-1px);
+}
+.auth-form {
+  margin-top: 10px;
+}
+.auth-form label {
+  font-size: 12px;
+  display: block;
+  margin-top: 6px;
+  margin-bottom: 2px;
+}
+.auth-input {
+  width: 100%;
+  border-radius: 999px;
+  border: 1px solid rgba(148,163,184,0.7);
+  background: rgba(15,23,42,0.96);
+  padding: 7px 10px;
+  color: #e5e7eb;
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+}
+.auth-input:focus {
+  border-color: #22d3ee;
+  box-shadow: 0 10px 28px rgba(56,189,248,0.7);
+  transform: translateY(-1px);
+}
+.auth-remember {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: #9ca3af;
+  margin-top: 8px;
+}
+.auth-remember input {
+  accent-color: #22d3ee;
+}
+.auth-submit-btn {
+  margin-top: 10px;
+  width: 100%;
+  border-radius: 999px;
+  border: none;
+  background: linear-gradient(135deg, #22d3ee, #a855f7);
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px;
+  cursor: pointer;
+  box-shadow: 0 18px 40px rgba(15,23,42,0.9);
+  transition: filter 0.15s, transform 0.15s, box-shadow 0.15s;
+}
+.auth-submit-btn:hover:not([disabled]) {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+  box-shadow: 0 26px 60px rgba(15,23,42,0.95);
+}
+.auth-submit-btn[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.auth-error {
+  margin-top: 6px;
+  font-size: 11px;
+  color: #fecaca;
+  min-height: 14px;
+}
+.auth-foot {
+  margin-top: 8px;
+  font-size: 10px;
+  color: #6b7280;
 }
 
 /* Scroll progress */
@@ -261,50 +542,65 @@ header {
   left: 0;
   height: 3px;
   width: 0%;
-  background: var(--accent);
+  background: linear-gradient(to right, var(--accent), #a855f7, #22c55e);
   z-index: 100;
+  box-shadow: 0 0 18px rgba(56,189,248,0.6);
+  transition: width 0.12s ease-out;
 }
 
 /* ========= LAYOUT ========= */
 .wrapper {
   display: grid;
-  grid-template-columns: 260px minmax(0, 1fr) 340px;
-  height: calc(100vh - 50px);
+  grid-template-columns: 260px minmax(0,1fr) 340px;
+  gap: 0;
+  height: calc(100vh - 60px);
+  padding: 10px 14px 16px;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity var(--transition-med), transform var(--transition-med);
 }
 
 /* ========= SIDEBAR ========= */
 .sidebar {
   background: var(--bg-sidebar);
-  border-right: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
   padding: 14px;
   overflow-y: auto;
+  box-shadow: var(--shadow-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .sidebar-section-title {
-  font-size: 13px;
+  font-size: 12px;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.09em;
   color: var(--text-muted);
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid rgba(148,163,184,0.4);
   padding-bottom: 4px;
-  margin-bottom: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-#pageList {
-  margin-bottom: 16px;
-}
+#pageList { margin-bottom: 4px; }
 
 .page-item {
   font-size: 13px;
-  padding: 5px 6px;
-  border-radius: 4px;
+  padding: 6px 7px;
+  border-radius: var(--radius-md);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: 2px;
+  transition: background var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
 }
 .page-item:hover {
   background: var(--accent-soft);
+  transform: translateY(-1px);
 }
 .page-item-title {
   flex: 1;
@@ -314,30 +610,79 @@ header {
 }
 .page-badge {
   font-size: 10px;
-  padding: 1px 5px;
+  padding: 2px 6px;
   border-radius: 999px;
-  border: 1px solid var(--border);
+  border: 1px solid rgba(148,163,184,0.6);
   color: var(--text-muted);
   margin-left: 5px;
 }
 
-/* Tools */
-.sidebar-tools a {
-  display: block;
-  font-size: 13px;
-  padding: 4px 2px;
-  color: var(--text-muted);
+/* Favorites / Recent / Achievements */
+.sidebar-pill-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 6px;
 }
+.sidebar-pill {
+  font-size: 11px;
+  padding: 2px 7px;
+  border-radius: 999px;
+  border: 1px solid rgba(148,163,184,0.4);
+  cursor: pointer;
+  color: var(--text-muted);
+  max-width: 100%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.sidebar-pill:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* Achievements */
+#achievementsBox {
+  font-size: 11px;
+  color: var(--text-muted);
+  border-radius: var(--radius-md);
+  border: 1px dashed rgba(148,163,184,0.6);
+  padding: 6px 8px;
+}
+
+/* Tools */
+.sidebar-tools {
+  margin-top: 4px;
+}
+.sidebar-tools a {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  padding: 5px 4px;
+  color: var(--text-muted);
+  border-radius: var(--radius-md);
+  transition: color var(--transition-fast), background var(--transition-fast), transform var(--transition-fast);
+}
+.sidebar-tools a::before { content: "•"; font-size: 10px; opacity: 0.7; }
 .sidebar-tools a:hover {
   color: var(--accent);
+  background: rgba(148,163,184,0.08);
+  transform: translateY(-1px);
 }
 
 /* ========= ARTICLE VIEW ========= */
 .article-view {
   background: var(--bg-alt);
-  padding: 24px 26px 60px;
+  margin: 0 12px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  padding: 22px 24px 60px;
   overflow-y: auto;
   position: relative;
+  box-shadow: var(--shadow-soft);
+  max-width: 960px;
+  justify-self: center;
 }
 
 .article-title-row {
@@ -351,31 +696,46 @@ header {
   margin: 0;
   font-family: "Linux Libertine", "Georgia", serif;
   font-size: 28px;
+  letter-spacing: 0.01em;
 }
 
 .article-actions {
   display: flex;
+  flex-wrap: wrap;
   gap: 6px;
 }
 
 .article-actions button {
   border-radius: 999px;
-  border: 1px solid var(--border);
-  background: var(--bg);
+  border: 1px solid rgba(148,163,184,0.7);
+  background: radial-gradient(circle at top, rgba(249,250,251,0.96), rgba(229,231,235,0.98));
   font-size: 11px;
-  padding: 3px 9px;
+  padding: 4px 9px;
   cursor: pointer;
   color: var(--text-muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: background var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast);
+}
+[data-theme="dark"] .article-actions button,
+[data-theme="gamer"] .article-actions button,
+[data-theme="hybrid"] .article-actions button,
+[data-theme="fandom"] .article-actions button {
+  background: radial-gradient(circle at top, rgba(15,23,42,0.96), rgba(15,23,42,0.9));
+  color: #e5e7eb;
 }
 .article-actions button:hover {
   background: var(--accent-soft);
-  color: var(--accent);
+  border-color: var(--accent);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 25px rgba(15,23,42,0.45);
 }
 
 .meta {
   font-size: 12px;
   color: var(--text-muted);
-  margin-top: 6px;
+  margin-top: 8px;
   margin-bottom: 4px;
 }
 
@@ -387,71 +747,68 @@ header {
 
 .badges {
   display: flex;
+  flex-wrap: wrap;
   gap: 6px;
-  margin-bottom: 16px;
+  margin-bottom: 10px;
 }
 .badge {
   font-size: 11px;
   border-radius: 999px;
-  padding: 2px 8px;
-  border: 1px solid var(--border);
-  background: var(--bg);
+  padding: 3px 10px;
+  border: 1px solid rgba(148,163,184,0.7);
+  background: rgba(249,250,251,0.96);
+  color: var(--text-muted);
 }
+[data-theme="dark"] .badge,
+[data-theme="gamer"] .badge,
+[data-theme="hybrid"] .badge,
+[data-theme="fandom"] .badge {
+  background: rgba(15,23,42,0.98);
+}
+.badge.featured { border-color: var(--accent); color: var(--accent); }
+.badge.stub { border-color: var(--danger); color: var(--danger); }
 
-.badge.featured {
-  border-color: var(--accent);
-  color: var(--accent);
-}
-.badge.stub {
-  border-color: var(--danger);
-  color: var(--danger);
-}
-
-/* TOC */
 #toc {
-  background: var(--bg);
-  border: 1px solid var(--border);
+  background: radial-gradient(circle at top left, rgba(249,250,251,0.98), rgba(229,231,235,0.93));
+  border: 1px solid rgba(148,163,184,0.6);
   padding: 10px 12px;
-  border-radius: 4px;
+  border-radius: var(--radius-md);
   margin-bottom: 16px;
-  max-width: 260px;
+  max-width: 280px;
   font-size: 13px;
+}
+[data-theme="dark"] #toc,
+[data-theme="gamer"] #toc,
+[data-theme="hybrid"] #toc,
+[data-theme="fandom"] #toc {
+  background: radial-gradient(circle at top, rgba(15,23,42,0.98), rgba(15,23,42,0.96));
 }
 #toc h3 {
   margin: 0 0 6px;
   font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
-#toc ul {
-  margin: 0;
-  padding-left: 18px;
-}
-#toc li {
-  margin-bottom: 3px;
-}
+#toc h3::before { content: "🧭"; }
+#toc ul { margin: 0; padding-left: 18px; }
+#toc li { margin-bottom: 3px; }
 
-/* Article body */
 #viewBody {
   font-size: 14px;
-  line-height: 1.65;
+  line-height: 1.7;
 }
-
 #viewBody h2,
 #viewBody h3 {
   font-family: "Linux Libertine", "Georgia", serif;
   margin-top: 18px;
   margin-bottom: 6px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid rgba(148,163,184,0.4);
   padding-bottom: 4px;
 }
-#viewBody p {
-  margin: 6px 0;
-}
-#viewBody ul {
-  margin: 6px 0 6px 22px;
-}
-#viewBody li {
-  margin-bottom: 3px;
-}
+#viewBody p { margin: 6px 0; }
+#viewBody ul { margin: 6px 0 6px 22px; }
+#viewBody li { margin-bottom: 3px; }
 blockquote {
   margin: 8px 0;
   padding-left: 10px;
@@ -463,46 +820,147 @@ code {
   font-family: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   font-size: 12px;
   background: var(--accent-soft);
-  padding: 1px 4px;
+  padding: 2px 5px;
   border-radius: 4px;
 }
 
-/* ========= EDITOR (RIGHT) ========= */
+/* AI summary box (client-side pseudo) */
+#summaryBox {
+  font-size: 12px;
+  padding: 8px 10px;
+  border-radius: var(--radius-md);
+  border: 1px dashed rgba(148,163,184,0.7);
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+/* ========= EDITOR ========= */
 .editor {
   background: var(--bg-sidebar);
-  border-left: 1px solid var(--border);
-  padding: 16px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  padding: 14px 14px 16px;
   overflow-y: auto;
+  box-shadow: var(--shadow-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
-.editor h2 {
-  margin-top: 0;
-  font-size: 16px;
+/* Editor fullscreen */
+body.editor-fullscreen .wrapper {
+  grid-template-columns: 0 minmax(0,1fr) 420px;
+}
+body.editor-fullscreen .sidebar { display: none; }
+body.editor-fullscreen .article-view { display: none; }
+body.editor-fullscreen .editor {
+  grid-column: 1 / -1;
+  max-width: 980px;
+  margin: 0 auto;
 }
 
+/* Tabs */
+.editor h2 { margin: 0 0 6px; font-size: 15px; }
+.editor-tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+.editor-tab {
+  flex: 1;
+  text-align: center;
+  font-size: 11px;
+  padding: 5px 0;
+  border-radius: 999px;
+  border: 1px solid rgba(148,163,184,0.5);
+  background: rgba(248,250,252,0.96);
+  color: var(--text-muted);
+  cursor: pointer;
+  user-select: none;
+  transition: background var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+[data-theme="dark"] .editor-tab,
+[data-theme="gamer"] .editor-tab,
+[data-theme="hybrid"] .editor-tab,
+[data-theme="fandom"] .editor-tab {
+  background: rgba(15,23,42,0.96);
+  color: #9ca3af;
+}
+.editor-tab.active {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+  box-shadow: 0 10px 24px rgba(15,23,42,0.45);
+  transform: translateY(-1px);
+}
+.editor-panel {
+  display: none;
+  flex-direction: column;
+  gap: 6px;
+}
+.editor-panel.active { display: flex; }
+
+/* Toolbar */
+#editorToolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+.toolbar-btn {
+  font-size: 11px;
+  padding: 3px 7px;
+  border-radius: 999px;
+  border: 1px solid rgba(148,163,184,0.6);
+  background: rgba(248,250,252,0.96);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast);
+}
+[data-theme="dark"] .toolbar-btn,
+[data-theme="gamer"] .toolbar-btn,
+[data-theme="hybrid"] .toolbar-btn,
+[data-theme="fandom"] .toolbar-btn {
+  background: rgba(15,23,42,0.96);
+  color: #9ca3af;
+}
+.toolbar-btn:hover {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+/* Inputs inside editor */
 .editor label {
   font-size: 12px;
   font-weight: 600;
   display: block;
-  margin-top: 8px;
+  margin-top: 6px;
   margin-bottom: 3px;
 }
-
 .editor input,
 .editor textarea,
 .editor select {
   width: 100%;
-  border-radius: 4px;
-  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(148,163,184,0.7);
   background: var(--bg-alt);
   color: var(--text-main);
   font-size: 13px;
-  padding: 6px;
+  padding: 7px 8px;
+  outline: none;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
 }
-
 .editor textarea {
-  min-height: 150px;
+  min-height: 160px;
   resize: vertical;
+}
+.editor input:focus,
+.editor textarea:focus,
+.editor select:focus {
+  border-color: var(--accent);
+  box-shadow: var(--shadow-strong);
+  transform: translateY(-1px);
 }
 
 .editor small {
@@ -510,24 +968,47 @@ code {
   color: var(--text-muted);
 }
 
-.editor button {
+#editorPreviewBox {
+  font-size: 13px;
+  line-height: 1.6;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(148,163,184,0.7);
+  padding: 8px 9px;
+  max-height: 220px;
+  overflow: auto;
+  background: var(--bg-alt);
+}
+
+/* History list */
+#historyList {
+  font-size: 11px;
+  margin-top: 4px;
+}
+
+/* Save button */
+.editor button#saveBtn {
   margin-top: 10px;
   width: 100%;
   border-radius: 999px;
   border: none;
-  background: var(--accent);
+  background: linear-gradient(135deg, var(--accent), #a855f7);
   color: white;
   font-size: 13px;
   font-weight: 600;
-  padding: 8px;
+  padding: 9px;
   cursor: pointer;
+  box-shadow: var(--shadow-soft);
+  transition: filter var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
 }
-.editor button[disabled] {
-  opacity: 0.5;
+#saveBtn[disabled] {
+  opacity: 0.55;
   cursor: not-allowed;
+  filter: grayscale(0.1);
 }
-.editor button:hover:not([disabled]) {
-  filter: brightness(1.1);
+#saveBtn:hover:not([disabled]) {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-strong);
 }
 
 #statusText {
@@ -536,41 +1017,51 @@ code {
   color: var(--text-muted);
 }
 
-/* Floating new-page button */
+/* Floating buttons */
 #fabNew {
   position: fixed;
   bottom: 20px;
   right: 20px;
   border-radius: 999px;
-  background: var(--accent);
+  background: linear-gradient(135deg, var(--accent), #a855f7);
   color: white;
   border: none;
   padding: 10px 14px;
   font-size: 13px;
   cursor: pointer;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  box-shadow: var(--shadow-strong);
   z-index: 50;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), filter var(--transition-fast);
 }
 #fabNew:hover {
-  filter: brightness(1.1);
+  filter: brightness(1.08);
+  transform: translateY(-2px) scale(1.01);
 }
-
-/* Back to top */
 #backTop {
   position: fixed;
   bottom: 62px;
   right: 20px;
   border-radius: 999px;
-  border: 1px solid var(--border);
+  border: 1px solid rgba(148,163,184,0.7);
   background: var(--bg-alt);
   color: var(--text-muted);
   font-size: 11px;
   padding: 6px 8px;
   cursor: pointer;
   display: none;
+  box-shadow: var(--shadow-soft);
+  transition: background var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+#backTop:hover {
+  background: var(--accent-soft);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-strong);
 }
 
-/* Preview tooltip */
+/* Hover preview */
 #previewCard {
   position: fixed;
   max-width: 280px;
@@ -578,26 +1069,49 @@ code {
   border: 1px solid var(--border);
   box-shadow: var(--shadow-soft);
   padding: 8px 10px;
-  border-radius: 4px;
+  border-radius: var(--radius-md);
   font-size: 12px;
   display: none;
   z-index: 40;
 }
 
-/* Responsive */
+/* Confetti (very simple) */
+.confetti-piece {
+  position: fixed;
+  width: 6px;
+  height: 10px;
+  border-radius: 2px;
+  opacity: 0.8;
+  pointer-events: none;
+  z-index: 200;
+  animation: confetti-fall linear forwards;
+}
+@keyframes confetti-fall {
+  to {
+    transform: translate3d(var(--x-move), 100vh, 0) rotateZ(360deg);
+    opacity: 0;
+  }
+}
+
+/* ========= RESPONSIVE ========= */
+@media (max-width: 1200px) {
+  .wrapper {
+    grid-template-columns: 230px minmax(0,1.2fr) 320px;
+  }
+}
 @media (max-width: 1024px) {
   .wrapper {
-    grid-template-columns: 220px minmax(0, 1fr);
+    grid-template-columns: 230px minmax(0,1fr);
     grid-template-rows: auto 260px;
     grid-template-areas:
       "sidebar article"
       "editor editor";
+    height: auto;
   }
   .sidebar { grid-area: sidebar; }
-  .article-view { grid-area: article; }
-  .editor { grid-area: editor; height: 260px; }
+  .article-view { grid-area: article; margin: 0 0 0 10px; }
+  .editor { grid-area: editor; height: 260px; margin-top: 10px; }
 }
-
 @media (max-width: 768px) {
   header {
     flex-direction: column;
@@ -606,13 +1120,21 @@ code {
   }
   .wrapper {
     grid-template-columns: 1fr;
-    grid-template-rows: 220px auto 260px;
+    grid-template-rows: 210px auto 260px;
     grid-template-areas:
       "sidebar"
       "article"
       "editor";
+    padding: 10px 10px 16px;
   }
-  .sidebar { height: 220px; }
+  .sidebar { height: 210px; }
+  .article-view { margin: 10px 0; }
+  #fabNew,
+  #backTop { right: 14px; }
+}
+@media (max-width: 480px) {
+  #searchBox { width: 190px; }
+  .logo-sub { max-width: 180px; }
 }
 </style>
 </head>
@@ -622,7 +1144,15 @@ code {
 <header>
   <div class="header-left">
     <div class="logo" onclick="location.search=''">UltraWiki</div>
-    <div class="logo-sub">Mini multi-theme wiki with login & page ownership</div>
+    <div>
+      <div class="logo-sub">Multi-theme wiki · login · ownership · history · favorites</div>
+      <div class="theme-chips">
+        <div class="theme-chip">Ultra Pro</div>
+        <div class="theme-chip">Classic Wiki</div>
+        <div class="theme-chip">HyperGamer</div>
+        <div class="theme-chip">Sakura Breeze</div>
+      </div>
+    </div>
   </div>
   <div class="header-right">
     <div class="search-wrap">
@@ -630,17 +1160,16 @@ code {
       <div id="searchResults"></div>
     </div>
     <select id="themeSelect" class="select">
-      <option value="hybrid">Hybrid AI</option>
-      <option value="wikipedia">Wikipedia</option>
-      <option value="modern">Modern</option>
-      <option value="dark">Dark</option>
+      <option value="hybrid">Hybrid AI · Ultra Pro</option>
+      <option value="wikipedia">Wikipedia Classic</option>
+      <option value="modern">Modern Light</option>
+      <option value="dark">Dark · Midnight</option>
       <option value="gamer">Gamer / Lore</option>
-      <option value="fandom">Fandom</option>
-      <option value="anime">Anime</option>
+      <option value="fandom">Fandom · Mythic</option>
+      <option value="anime">Anime · Sakura</option>
     </select>
     <button class="header-btn" onclick="randomPage()" title="Random page (R)">🎲 Random</button>
 
-    <!-- Simple auth block -->
     <div class="auth-status" id="authStatus">Not logged in</div>
     <button class="auth-btn" id="loginBtn" onclick="promptLogin()">Log in</button>
     <button class="auth-btn" id="signupBtn" onclick="promptSignup()">Sign up</button>
@@ -651,25 +1180,50 @@ code {
 <div class="wrapper">
   <!-- SIDEBAR -->
   <aside class="sidebar">
-    <div class="sidebar-section-title">Pages <span id="pageCount"></span></div>
-    <div id="pageList"></div>
+    <div>
+      <div class="sidebar-section-title">
+        <span>Pages</span><span id="pageCount"></span>
+      </div>
+      <div id="pageList"></div>
+    </div>
 
-    <div class="sidebar-section-title">Tools</div>
-    <div class="sidebar-tools">
-      <a href="javascript:void(0)" onclick="scrollToTop()">Back to top</a>
-      <a href="javascript:void(0)" onclick="newPageFromSidebar()">Create page</a>
-      <a href="javascript:void(0)" onclick="randomPage()">Random article</a>
-      <a href="javascript:void(0)" onclick="showShortcutHint()">Keyboard shortcuts</a>
+    <div>
+      <div class="sidebar-section-title">Favorites ⭐</div>
+      <div id="favoritesList" class="sidebar-pill-list"></div>
+    </div>
+
+    <div>
+      <div class="sidebar-section-title">Recent 🕒</div>
+      <div id="recentList" class="sidebar-pill-list"></div>
+    </div>
+
+    <div>
+      <div class="sidebar-section-title">Achievements 🎖</div>
+      <div id="achievementsBox">
+        Pages created: <span id="achPages">0</span><br>
+        Total saves: <span id="achSaves">0</span>
+      </div>
+    </div>
+
+    <div>
+      <div class="sidebar-section-title">Tools</div>
+      <div class="sidebar-tools">
+        <a href="javascript:void(0)" onclick="scrollToTop()">Back to top</a>
+        <a href="javascript:void(0)" onclick="newPageFromSidebar()">Create page</a>
+        <a href="javascript:void(0)" onclick="randomPage()">Random article</a>
+        <a href="javascript:void(0)" onclick="showShortcutHint()">Keyboard shortcuts</a>
+      </div>
     </div>
   </aside>
 
   <!-- ARTICLE -->
   <main class="article-view" id="articleView">
     <div class="article-title-row">
-      <h1 id="viewTitle">Welcome to UltraWiki</h1>
+      <h1 id="viewTitle">Welcome to UltraWiki V3</h1>
       <div class="article-actions">
-        <button onclick="printArticle()">Print</button>
-        <button onclick="shareArticle()">Share</button>
+        <button onclick="printArticle()">🖨 Print</button>
+        <button onclick="shareArticle()">🔗 Share</button>
+        <button id="favBtn" onclick="toggleFavorite()">⭐ Favorite</button>
       </div>
     </div>
     <div class="meta" id="viewMeta">
@@ -682,12 +1236,16 @@ code {
       <div class="badge">In-memory only</div>
     </div>
 
+    <div id="summaryBox">
+      Summary preview will appear here once the article has enough content.
+    </div>
+
     <div id="toc"></div>
 
     <div id="viewBody">
       <p>
-        UltraWiki is a single-file, multi-theme wiki viewer and editor that talks to a FastAPI backend.
-        Now it supports <strong>login and page ownership</strong> using your FM Radio Login API.
+        UltraWiki V3 is a single-file, multi-theme wiki viewer and editor that talks to a FastAPI backend.
+        It now includes <strong>login, page ownership, favorites, recent pages, achievements, drafts, and local history</strong>.
       </p>
       <p>
         You must <strong>log in</strong> to create or edit pages. When you publish a page, you become the
@@ -695,9 +1253,9 @@ code {
       </p>
       <h2>How to use</h2>
       <ul>
-        <li>Use the login buttons in the header (or the sign-up button to make a new account).</li>
-        <li>Once logged in, type a title and content, then click <strong>Publish page</strong>.</li>
-        <li>You will be recorded as the page author. Only you can edit that page.</li>
+        <li>Use the login buttons in the header (or sign up to create a new account).</li>
+        <li>Once logged in, use the editor on the right to create or edit pages you own.</li>
+        <li>Favorites and recent pages are stored in your browser only.</li>
       </ul>
       <h2>Keyboard shortcuts</h2>
       <ul>
@@ -712,26 +1270,75 @@ code {
   <aside class="editor">
     <h2>Create / Edit Page</h2>
 
-    <label for="titleInput">Title</label>
-    <input id="titleInput" type="text" placeholder="e.g. Level 0 — The Lobby">
+    <div class="editor-tabs">
+      <div class="editor-tab active" data-tab="write">Write</div>
+      <div class="editor-tab" data-tab="preview">Preview</div>
+      <div class="editor-tab" data-tab="meta">Meta / History</div>
+    </div>
 
-    <label for="templateSelect">Template</label>
-    <select id="templateSelect">
-      <option value="">Blank</option>
-      <option value="bio">Biography</option>
-      <option value="game">Game / Map</option>
-      <option value="lore">Lore / Creature</option>
-      <option value="guide">Guide / Tutorial</option>
-    </select>
+    <!-- WRITE PANEL -->
+    <div class="editor-panel active" id="panel-write">
+      <label for="titleInput">Title</label>
+      <input id="titleInput" type="text" placeholder="e.g. Level 0 — The Lobby">
 
-    <label for="contentInput">Content (HTML allowed)</label>
-    <textarea id="contentInput" placeholder="<h2>Section</h2>
+      <label for="templateSelect">Template</label>
+      <select id="templateSelect">
+        <option value="">Blank</option>
+        <option value="bio">Biography</option>
+        <option value="game">Game / Map</option>
+        <option value="lore">Lore / Creature</option>
+        <option value="guide">Guide / Tutorial</option>
+      </select>
+
+      <label>Quick formatting</label>
+      <div id="editorToolbar">
+        <button type="button" class="toolbar-btn" data-action="bold"><b>B</b></button>
+        <button type="button" class="toolbar-btn" data-action="italic"><i>I</i></button>
+        <button type="button" class="toolbar-btn" data-action="h2">H2</button>
+        <button type="button" class="toolbar-btn" data-action="h3">H3</button>
+        <button type="button" class="toolbar-btn" data-action="ul">• List</button>
+        <button type="button" class="toolbar-btn" data-action="ol">1. List</button>
+        <button type="button" class="toolbar-btn" data-action="clear">Clear</button>
+        <button type="button" class="toolbar-btn" data-action="fullscreen">Fullscreen</button>
+      </div>
+
+      <label for="contentInput">Content (HTML allowed)</label>
+      <textarea id="contentInput" placeholder="<h2>Section</h2>
 <p>Write your content here…"></textarea>
 
-    <small id="editorHint">
-      Tip: Use &lt;h2&gt; for main sections and &lt;h3&gt; for subsections to auto-generate a table of contents.
-      You must be logged in to publish.
-    </small>
+      <small id="editorHint">
+        Tip: Use &lt;h2&gt; for main sections and &lt;h3&gt; for subsections to auto-generate a table of contents.
+        Drafts auto-save locally every few seconds.
+      </small>
+    </div>
+
+    <!-- PREVIEW PANEL -->
+    <div class="editor-panel" id="panel-preview">
+      <small>Live preview of your content (rendered below):</small>
+      <div id="editorPreviewBox">(No content yet.)</div>
+    </div>
+
+    <!-- META PANEL -->
+    <div class="editor-panel" id="panel-meta">
+      <label for="categoriesInput">Categories (comma-separated)</label>
+      <input id="categoriesInput" type="text" placeholder="e.g. Lore, Backrooms">
+
+      <label for="tagsInput">Tags (comma-separated)</label>
+      <input id="tagsInput" type="text" placeholder="e.g. horror, entity, level">
+
+      <small>
+        Categories & tags are stored inside the page content as a hidden meta block.
+      </small>
+
+      <div style="font-size:12px; margin-top:8px;">
+        <div><strong>Current page slug:</strong> <span id="metaSlug">(new)</span></div>
+        <div><strong>Author:</strong> <span id="metaAuthor">System</span></div>
+        <div><strong>Logged in as:</strong> <span id="metaUser">None</span></div>
+      </div>
+
+      <label>History (local only)</label>
+      <div id="historyList">(No saved versions yet for this page on this device.)</div>
+    </div>
 
     <button id="saveBtn">Publish page</button>
     <div id="statusText">Ready.</div>
@@ -741,17 +1348,50 @@ code {
 <button id="fabNew" onclick="focusNewPage()">＋ New Page (N)</button>
 <button id="backTop" onclick="scrollToTop()">▲ Top</button>
 
+<!-- AUTH MODAL -->
+<div id="authModal" class="auth-modal">
+  <div class="auth-backdrop"></div>
+  <div class="auth-card">
+    <div class="auth-header-row">
+      <div>
+        <div class="auth-title" id="authCardTitle">Log in to UltraWiki</div>
+        <div class="auth-sub">Use your FM Radio / UltraWiki account.</div>
+      </div>
+      <button class="auth-close-btn" type="button" onclick="closeAuthModal()">✕</button>
+    </div>
+    <div class="auth-tabs-row">
+      <button type="button" id="authTabLogin" class="auth-tab active">Log in</button>
+      <button type="button" id="authTabSignup" class="auth-tab">Sign up</button>
+    </div>
+    <form id="authForm" class="auth-form">
+      <label for="authUsername">Username</label>
+      <input id="authUsername" class="auth-input" type="text" autocomplete="username">
+
+      <label for="authPassword">Password</label>
+      <input id="authPassword" class="auth-input" type="password" autocomplete="current-password">
+
+      <div id="confirmGroup">
+        <label for="authConfirm">Confirm password</label>
+        <input id="authConfirm" class="auth-input" type="password" autocomplete="new-password">
+      </div>
+
+      <label class="auth-remember">
+        <input type="checkbox" id="authRemember" checked>
+        <span>Remember me on this device</span>
+      </label>
+
+      <button type="submit" id="authSubmitBtn" class="auth-submit-btn">Log in</button>
+      <div id="authError" class="auth-error"></div>
+      <div class="auth-foot">Your credentials are sent securely to the UltraWiki / FM Radio login API.</div>
+    </form>
+  </div>
+</div>
+
 <div id="previewCard"></div>
 
 <script>
 /* ========= CONFIG ========= */
-
-/* Your WIKI API (FastAPI) base.
-   This is the one that has /api/list, /api/get/{slug}, /api/save
-   Change if needed. */
 const API = "https://mini-wiki-api.onrender.com/api";
-
-/* Your LOGIN API base (from Render) */
 const LOGIN_API = "https://login-api-iwy1.onrender.com";
 
 /* ========= STATE ========= */
@@ -760,14 +1400,17 @@ let currentSlug = null;
 let currentAuthor = null;
 let currentUser = null;
 let currentUserBanned = false;
+let autosaveTimer = null;
 
-/* ========= THEME HANDLING ========= */
+/* Auth modal state */
+let authMode = "login";
+
+/* ========= THEME ========= */
 const themeSelect = document.getElementById("themeSelect");
 themeSelect.addEventListener("change", () => {
   document.body.setAttribute("data-theme", themeSelect.value);
   localStorage.setItem("ultrawiki_theme", themeSelect.value);
 });
-
 (function initTheme() {
   const saved = localStorage.getItem("ultrawiki_theme");
   if (saved) {
@@ -775,14 +1418,36 @@ themeSelect.addEventListener("change", () => {
     themeSelect.value = saved;
   }
 })();
+window.addEventListener("load", () => {
+  document.body.classList.add("loaded");
+});
 
-/* ========= SIMPLE AUTH UI ========= */
+/* ========= AUTH UI ========= */
 const authStatusEl = document.getElementById("authStatus");
 const loginBtnEl = document.getElementById("loginBtn");
 const signupBtnEl = document.getElementById("signupBtn");
 const logoutBtnEl = document.getElementById("logoutBtn");
 const saveBtnEl = document.getElementById("saveBtn");
 const editorHintEl = document.getElementById("editorHint");
+
+const metaSlugEl = document.getElementById("metaSlug");
+const metaAuthorEl = document.getElementById("metaAuthor");
+const metaUserEl = document.getElementById("metaUser");
+
+/* Auth modal elements */
+const authModalEl = document.getElementById("authModal");
+const authBackdropEl = authModalEl.querySelector(".auth-backdrop");
+const authFormEl = document.getElementById("authForm");
+const authTabLoginEl = document.getElementById("authTabLogin");
+const authTabSignupEl = document.getElementById("authTabSignup");
+const authCardTitleEl = document.getElementById("authCardTitle");
+const authUsernameEl = document.getElementById("authUsername");
+const authPasswordEl = document.getElementById("authPassword");
+const authConfirmEl = document.getElementById("authConfirm");
+const authRememberEl = document.getElementById("authRemember");
+const authSubmitBtnEl = document.getElementById("authSubmitBtn");
+const authErrorEl = document.getElementById("authError");
+const confirmGroupEl = document.getElementById("confirmGroup");
 
 function updateAuthUI() {
   if (!currentUser) {
@@ -791,126 +1456,189 @@ function updateAuthUI() {
     signupBtnEl.style.display = "inline-block";
     logoutBtnEl.style.display = "none";
     saveBtnEl.disabled = true;
-    editorHintEl.textContent = "Tip: You must be logged in to publish pages.";
+    editorHintEl.textContent = "Tip: You must be logged in to publish pages. Drafts still auto-save locally.";
+    metaUserEl.textContent = "None";
   } else if (currentUserBanned) {
     authStatusEl.innerHTML = `<span style="color: var(--danger);">BANNED: ${currentUser}</span>`;
     loginBtnEl.style.display = "inline-block";
     signupBtnEl.style.display = "inline-block";
     logoutBtnEl.style.display = "inline-block";
     saveBtnEl.disabled = true;
-    editorHintEl.textContent = "Your account is banned. You cannot publish pages.";
+    editorHintEl.textContent = "Your account is banned. You cannot publish pages, but drafts still save locally.";
+    metaUserEl.textContent = currentUser + " (banned)";
   } else {
     authStatusEl.innerHTML = `Logged in as <strong>${currentUser}</strong>`;
     loginBtnEl.style.display = "none";
     signupBtnEl.style.display = "none";
     logoutBtnEl.style.display = "inline-block";
     saveBtnEl.disabled = false;
-    editorHintEl.textContent = "You are logged in. You can create and edit pages you own.";
+    editorHintEl.textContent = "You are logged in. You can create and edit pages you own. Drafts auto-save locally.";
+    metaUserEl.textContent = currentUser;
   }
 }
 
-/* ===== AUTH HELPERS ===== */
+/* AUTH HELPERS */
 async function loginRequest(username, password) {
   const body = new URLSearchParams();
   body.append("username", username);
   body.append("password", password);
 
-  const res = await fetch(`${LOGIN_API}/login`, {
-    method: "POST",
-    body
-  });
-
+  const res = await fetch(`${LOGIN_API}/login`, { method: "POST", body });
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
     throw new Error(err.detail || `Login failed (${res.status})`);
   }
-
   return res.json();
 }
-
 async function signupRequest(username, password) {
   const body = new URLSearchParams();
   body.append("username", username);
   body.append("password", password);
 
-  const res = await fetch(`${LOGIN_API}/signup`, {
-    method: "POST",
-    body
-  });
-
+  const res = await fetch(`${LOGIN_API}/signup`, { method: "POST", body });
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
     throw new Error(err.detail || `Signup failed (${res.status})`);
   }
-
   return res.json();
 }
-
 async function logoutRequest() {
   const res = await fetch(`${LOGIN_API}/logout`, { method: "POST" });
   if (!res.ok) return;
   return res.json().catch(() => ({}));
 }
 
-/* ===== AUTH UI ACTIONS ===== */
-async function promptLogin() {
-  const username = prompt("Username:");
-  if (!username) return;
-  const password = prompt("Password:");
-  if (!password) return;
+/* AUTH MODAL LOGIC */
+function updateAuthModeUI() {
+  const isLogin = authMode === "login";
+  authTabLoginEl.classList.toggle("active", isLogin);
+  authTabSignupEl.classList.toggle("active", !isLogin);
+  authCardTitleEl.textContent = isLogin ? "Log in to UltraWiki" : "Create a new UltraWiki account";
+  authSubmitBtnEl.textContent = isLogin ? "Log in" : "Sign up";
+  confirmGroupEl.style.display = isLogin ? "none" : "block";
+  authErrorEl.textContent = "";
+}
+function openAuthModal(mode) {
+  authMode = mode || "login";
+  updateAuthModeUI();
+  authModalEl.classList.add("visible");
+  document.body.classList.add("auth-open");
+  setTimeout(() => {
+    authUsernameEl.focus();
+  }, 50);
+}
+function closeAuthModal() {
+  authModalEl.classList.remove("visible");
+  document.body.classList.remove("auth-open");
+  authErrorEl.textContent = "";
+  authPasswordEl.value = "";
+  authConfirmEl.value = "";
+}
+
+/* Replace old prompt-based actions */
+function promptLogin() { openAuthModal("login"); }
+function promptSignup() { openAuthModal("signup"); }
+
+/* Tab switch */
+authTabLoginEl.addEventListener("click", () => {
+  authMode = "login";
+  updateAuthModeUI();
+});
+authTabSignupEl.addEventListener("click", () => {
+  authMode = "signup";
+  updateAuthModeUI();
+});
+
+/* Close on backdrop click */
+authBackdropEl.addEventListener("click", closeAuthModal);
+
+/* Close on Esc */
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && authModalEl.classList.contains("visible")) {
+    closeAuthModal();
+  }
+});
+
+/* Form submit */
+authFormEl.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  await handleAuthSubmit();
+});
+
+async function handleAuthSubmit() {
+  const username = authUsernameEl.value.trim();
+  const password = authPasswordEl.value;
+  const confirm = authConfirmEl.value;
+  const remember = authRememberEl.checked;
+
+  authErrorEl.textContent = "";
+
+  if (!username || !password) {
+    authErrorEl.textContent = "Please enter both username and password.";
+    return;
+  }
+  if (authMode === "signup" && password !== confirm) {
+    authErrorEl.textContent = "Passwords do not match.";
+    return;
+  }
+
+  authSubmitBtnEl.disabled = true;
+  authSubmitBtnEl.textContent = authMode === "login" ? "Logging in…" : "Creating account…";
 
   try {
-    const data = await loginRequest(username, password);
-    currentUser = data.user || username;
-    currentUserBanned = !!data.banned;
+    if (authMode === "login") {
+      const data = await loginRequest(username, password);
+      currentUser = data.user || username;
+      currentUserBanned = !!data.banned;
 
-    // store for auto-login (same as your FM Radio logic style)
-    localStorage.setItem("ultrawiki_user", username);
-    localStorage.setItem("ultrawiki_pass", password);
+      if (remember) {
+        localStorage.setItem("ultrawiki_user", username);
+        localStorage.setItem("ultrawiki_pass", password);
+      } else {
+        localStorage.removeItem("ultrawiki_user");
+        localStorage.removeItem("ultrawiki_pass");
+      }
 
-    if (currentUserBanned) {
-      alert("You are banned on this system. You can view pages but not edit.");
+      if (currentUserBanned) {
+        authErrorEl.textContent = "You are banned. You can view pages but not edit.";
+      } else {
+        closeAuthModal();
+      }
     } else {
-      alert(`Welcome back, ${currentUser}!`);
+      const data = await signupRequest(username, password);
+      // Auto-login after signup
+      const loginData = await loginRequest(username, password);
+      currentUser = loginData.user || username;
+      currentUserBanned = !!loginData.banned;
+
+      if (remember) {
+        localStorage.setItem("ultrawiki_user", username);
+        localStorage.setItem("ultrawiki_pass", password);
+      } else {
+        localStorage.removeItem("ultrawiki_user");
+        localStorage.removeItem("ultrawiki_pass");
+      }
+
+      if (currentUserBanned) {
+        authErrorEl.textContent = "Your account appears banned after signup.";
+      } else {
+        closeAuthModal();
+      }
     }
 
     updateAuthUI();
-    // Re-check current page ownership if any page is open
     enforceOwnershipOnEditor();
   } catch (err) {
-    alert(err.message);
+    authErrorEl.textContent = err.message || "Authentication failed.";
+  } finally {
+    authSubmitBtnEl.disabled = false;
+    authSubmitBtnEl.textContent = authMode === "login" ? "Log in" : "Sign up";
   }
 }
 
-async function promptSignup() {
-  const username = prompt("Choose a username:");
-  if (!username) return;
-  const password = prompt("Choose a password:");
-  if (!password) return;
-
-  try {
-    const data = await signupRequest(username, password);
-    alert(data.message || "Account created.");
-
-    // Auto-login after signup
-    const loginData = await loginRequest(username, password);
-    currentUser = loginData.user || username;
-    currentUserBanned = !!loginData.banned;
-
-    localStorage.setItem("ultrawiki_user", username);
-    localStorage.setItem("ultrawiki_pass", password);
-
-    updateAuthUI();
-    enforceOwnershipOnEditor();
-  } catch (err) {
-    alert(err.message);
-  }
-}
-
+/* Logout */
 async function logoutUser() {
-  try {
-    await logoutRequest();
-  } catch {}
+  try { await logoutRequest(); } catch {}
   currentUser = null;
   currentUserBanned = false;
   localStorage.removeItem("ultrawiki_user");
@@ -919,7 +1647,7 @@ async function logoutUser() {
   enforceOwnershipOnEditor();
 }
 
-/* Auto-login if creds stored */
+/* Auto-login */
 async function tryAutoLogin() {
   const storedUser = localStorage.getItem("ultrawiki_user");
   const storedPass = localStorage.getItem("ultrawiki_pass");
@@ -938,7 +1666,7 @@ async function tryAutoLogin() {
   updateAuthUI();
 }
 
-/* ========= API HELPERS FOR WIKI ========= */
+/* ========= API HELPERS ========= */
 async function apiGet(path) {
   const res = await fetch(API + path);
   if (!res.ok) throw new Error("API error: " + res.status);
@@ -954,7 +1682,7 @@ async function apiPost(path, body) {
   return res.json();
 }
 
-/* ========= LOAD PAGES LIST ========= */
+/* ========= PAGES LIST ========= */
 async function loadPages() {
   try {
     const data = await apiGet("/list");
@@ -964,7 +1692,6 @@ async function loadPages() {
     console.error(err);
   }
 }
-
 function renderPageList(filter = "") {
   const listEl = document.getElementById("pageList");
   const countEl = document.getElementById("pageCount");
@@ -972,9 +1699,7 @@ function renderPageList(filter = "") {
 
   let pages = allPages;
   const term = filter.trim().toLowerCase();
-  if (term) {
-    pages = allPages.filter(p => p.title.toLowerCase().includes(term));
-  }
+  if (term) pages = allPages.filter(p => p.title.toLowerCase().includes(term));
 
   countEl.textContent = "(" + allPages.length + ")";
 
@@ -1007,114 +1732,40 @@ function renderPageList(filter = "") {
   });
 }
 
-/* ========= OPEN PAGE ========= */
-async function openPage(slug) {
-  try {
-    const data = await apiGet("/get/" + encodeURIComponent(slug));
-    const page = data.page;
-    currentSlug = page.slug;
-    currentAuthor = page.author || null;
-
-    document.getElementById("viewTitle").textContent = page.title;
-    document.getElementById("viewMeta").textContent = "Last updated: " + (page.updated || "Unknown");
-
-    const authorLineEl = document.getElementById("authorLine");
-    authorLineEl.innerHTML = "Author: <em>" + (currentAuthor || "Unknown") + "</em>";
-
-    // Put content in body
-    const bodyEl = document.getElementById("viewBody");
-    bodyEl.innerHTML = page.content || "<p>(Empty page)</p>";
-
-    // Update word count / read time
-    updateMetaInfo();
-
-    // Generate TOC
-    generateTOC();
-
-    // Fill editor with this page for editing
-    document.getElementById("titleInput").value = page.title;
-    document.getElementById("contentInput").value = page.content;
-
-    // Enforce ownership on editor
-    enforceOwnershipOnEditor();
-
-    // Push state into URL
-    if (history && history.pushState) {
-      history.pushState({slug}, "", "?page=" + encodeURIComponent(slug));
-    }
-  } catch (err) {
-    console.error(err);
-  }
-}
-
-/* Enforce: only author can edit */
-function enforceOwnershipOnEditor() {
-  const contentInput = document.getElementById("contentInput");
-  const titleInput = document.getElementById("titleInput");
-  const statusEl = document.getElementById("statusText");
-
-  // Default: editor follows auth state only
-  if (!currentSlug || !currentAuthor) {
-    // New page
-    if (!currentUser || currentUserBanned) {
-      saveBtnEl.disabled = true;
-      contentInput.readOnly = false;
-      titleInput.readOnly = false;
-      statusEl.textContent = currentUserBanned
-        ? "You are banned and cannot publish."
-        : "Log in to publish this as a new page.";
-    } else {
-      saveBtnEl.disabled = false;
-      contentInput.readOnly = false;
-      titleInput.readOnly = false;
-      statusEl.textContent = "You are creating a new page as " + currentUser + ".";
-    }
-    return;
-  }
-
-  // Existing page
-  if (!currentUser || currentUserBanned) {
-    contentInput.readOnly = true;
-    titleInput.readOnly = true;
-    saveBtnEl.disabled = true;
-    statusEl.textContent = currentUserBanned
-      ? "You are banned. You can view pages but cannot edit."
-      : "Read-only: log in as the author to edit this page.";
-  } else if (currentUser !== currentAuthor) {
-    contentInput.readOnly = true;
-    titleInput.readOnly = true;
-    saveBtnEl.disabled = true;
-    statusEl.textContent = `Read-only: this page belongs to ${currentAuthor}. You are logged in as ${currentUser}.`;
-  } else {
-    contentInput.readOnly = false;
-    titleInput.readOnly = false;
-    saveBtnEl.disabled = false;
-    statusEl.textContent = "You are the owner of this page. You can edit and publish changes.";
-  }
-}
-
-/* ========= META: WORD COUNT & READ TIME ========= */
+/* ========= META UTIL ========= */
 function updateMetaInfo() {
+  const metaEl = document.getElementById("viewMeta");
+  const base = metaEl.textContent.split(" · ")[0];
   const bodyText = document.getElementById("viewBody").innerText || "";
   const words = bodyText.trim().split(/\s+/).filter(Boolean);
   const wordCount = words.length;
-  const minutes = Math.max(1, Math.round(wordCount / 200)); // ~200 wpm
-
-  const metaEl = document.getElementById("viewMeta");
-  metaEl.textContent += ` · ${wordCount} words · ~${minutes} min read`;
+  const minutes = Math.max(1, Math.round(wordCount / 200));
+  metaEl.textContent = `${base} · ${wordCount} words · ~${minutes} min read`;
+  updateSummaryPreview(bodyText);
 }
 
-/* ========= TOC GENERATION ========= */
+/* Simple “AI-ish” summary: first 2 sentences, cleaned */
+function updateSummaryPreview(text) {
+  const box = document.getElementById("summaryBox");
+  const clean = text.replace(/\s+/g, " ").trim();
+  if (clean.length < 80) {
+    box.textContent = "Summary: write a bit more and a short summary of this article will appear here.";
+    return;
+  }
+  const sentences = clean.split(/([.!?])\s+/);
+  let summary = "";
+  for (let i = 0; i < sentences.length && summary.length < 280; i += 2) {
+    summary += sentences[i] + (sentences[i+1] || "") + " ";
+  }
+  box.textContent = "Summary: " + summary.trim();
+}
+
+/* ========= TOC ========= */
 function generateTOC() {
   const bodyEl = document.getElementById("viewBody");
   const tocEl = document.getElementById("toc");
   const headers = bodyEl.querySelectorAll("h2, h3");
-
-  if (!headers.length) {
-    tocEl.innerHTML = "";
-    return;
-  }
-
+  if (!headers.length) { tocEl.innerHTML = ""; return; }
   let html = "<h3>Contents</h3><ul>";
   headers.forEach((h, i) => {
     const id = "sec-" + i;
@@ -1125,10 +1776,357 @@ function generateTOC() {
   tocEl.innerHTML = html;
 }
 
+/* ========= FAVORITES / RECENT / ACH ========= */
+function getStoredArray(key) {
+  try { return JSON.parse(localStorage.getItem(key) || "[]"); } catch { return []; }
+}
+function setStoredArray(key, arr) {
+  localStorage.setItem(key, JSON.stringify(arr));
+}
+
+function isFavorite(slug) {
+  const favs = getStoredArray("ultrawiki_favs");
+  return favs.includes(slug);
+}
+function toggleFavorite() {
+  if (!currentSlug) return;
+  let favs = getStoredArray("ultrawiki_favs");
+  if (favs.includes(currentSlug)) {
+    favs = favs.filter(s => s !== currentSlug);
+  } else {
+    favs.unshift(currentSlug);
+  }
+  setStoredArray("ultrawiki_favs", favs.slice(0, 50));
+  renderFavorites();
+  updateFavButton();
+}
+function updateFavButton() {
+  const btn = document.getElementById("favBtn");
+  if (!currentSlug) {
+    btn.textContent = "⭐ Favorite";
+    btn.disabled = true;
+    return;
+  }
+  btn.disabled = false;
+  btn.textContent = isFavorite(currentSlug) ? "⭐ Favorited" : "⭐ Favorite";
+}
+
+function addRecent(slug) {
+  if (!slug) return;
+  let rec = getStoredArray("ultrawiki_recent");
+  rec = rec.filter(s => s !== slug);
+  rec.unshift(slug);
+  setStoredArray("ultrawiki_recent", rec.slice(0, 30));
+  renderRecent();
+}
+
+function renderFavorites() {
+  const favBox = document.getElementById("favoritesList");
+  favBox.innerHTML = "";
+  const favs = getStoredArray("ultrawiki_favs");
+  if (!favs.length) {
+    favBox.innerHTML = "<span style='font-size:11px;color:var(--text-muted);'>None yet.</span>";
+    return;
+  }
+  favs.forEach(slug => {
+    const page = allPages.find(p => p.slug === slug);
+    const label = page ? page.title : slug;
+    const pill = document.createElement("div");
+    pill.className = "sidebar-pill";
+    pill.textContent = label;
+    pill.title = slug;
+    pill.addEventListener("click", () => openPage(slug));
+    favBox.appendChild(pill);
+  });
+}
+
+function renderRecent() {
+  const recBox = document.getElementById("recentList");
+  recBox.innerHTML = "";
+  const rec = getStoredArray("ultrawiki_recent");
+  if (!rec.length) {
+    recBox.innerHTML = "<span style='font-size:11px;color:var(--text-muted);'>None yet.</span>";
+    return;
+  }
+  rec.forEach(slug => {
+    const page = allPages.find(p => p.slug === slug);
+    const label = page ? page.title : slug;
+    const pill = document.createElement("div");
+    pill.className = "sidebar-pill";
+    pill.textContent = label;
+    pill.title = slug;
+    pill.addEventListener("click", () => openPage(slug));
+    recBox.appendChild(pill);
+  });
+}
+
+function updateAchievementsDisplay() {
+  const pages = parseInt(localStorage.getItem("ultrawiki_ach_pages") || "0", 10);
+  const saves = parseInt(localStorage.getItem("ultrawiki_ach_saves") || "0", 10);
+  document.getElementById("achPages").textContent = pages;
+  document.getElementById("achSaves").textContent = saves;
+}
+
+function incrementAchievement(key) {
+  const val = parseInt(localStorage.getItem(key) || "0", 10) + 1;
+  localStorage.setItem(key, String(val));
+  updateAchievementsDisplay();
+}
+
+/* ========= OPEN PAGE ========= */
+async function openPage(slug) {
+  try {
+    const data = await apiGet("/get/" + encodeURIComponent(slug));
+    const page = data.page;
+    currentSlug = page.slug;
+    currentAuthor = page.author || null;
+
+    let content = page.content || "";
+    let meta = { categories: [], tags: [] };
+
+    if (content.startsWith("<!--meta:")) {
+      const end = content.indexOf("-->");
+      if (end !== -1) {
+        const metaStr = content.substring("<!--meta:".length, end).trim();
+        try { meta = JSON.parse(metaStr); } catch {}
+        content = content.substring(end + 3).trimStart();
+      }
+    }
+
+    document.getElementById("viewTitle").textContent = page.title;
+    document.getElementById("viewMeta").textContent = "Last updated: " + (page.updated || "Unknown");
+    document.getElementById("authorLine").innerHTML = "Author: <em>" + (currentAuthor || "Unknown") + "</em>";
+
+    const bodyEl = document.getElementById("viewBody");
+    bodyEl.innerHTML = content || "<p>(Empty page)</p>";
+
+    document.getElementById("titleInput").value = page.title;
+    document.getElementById("contentInput").value = content;
+    document.getElementById("categoriesInput").value = (meta.categories || []).join(", ");
+    document.getElementById("tagsInput").value = (meta.tags || []).join(", ");
+
+    metaSlugEl.textContent = page.slug || "(unknown)";
+    metaAuthorEl.textContent = currentAuthor || "Unknown";
+
+    updateMetaInfo();
+    generateTOC();
+    enforceOwnershipOnEditor();
+    updatePreviewFromEditor();
+    updateFavButton();
+    addRecent(page.slug);
+    renderHistoryList();
+
+    if (history && history.pushState) {
+      history.pushState({slug}, "", "?page=" + encodeURIComponent(slug));
+    }
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+/* ========= OWNERSHIP ========= */
+function enforceOwnershipOnEditor() {
+  const contentInput = document.getElementById("contentInput");
+  const titleInput = document.getElementById("titleInput");
+  const statusEl = document.getElementById("statusText");
+
+  if (!currentSlug || !currentAuthor) {
+    if (!currentUser || currentUserBanned) {
+      saveBtnEl.disabled = true;
+      contentInput.readOnly = false;
+      titleInput.readOnly = false;
+      statusEl.textContent = currentUserBanned
+        ? "You are banned and cannot publish."
+        : "Log in to publish this as a new page. Drafts still save locally.";
+    } else {
+      saveBtnEl.disabled = false;
+      contentInput.readOnly = false;
+      titleInput.readOnly = false;
+      statusEl.textContent = "You are creating a new page as " + currentUser + ".";
+    }
+  } else {
+    if (!currentUser || currentUserBanned) {
+      contentInput.readOnly = true;
+      titleInput.readOnly = true;
+      saveBtnEl.disabled = true;
+      statusEl.textContent = currentUserBanned
+        ? "You are banned. You can view pages but cannot edit."
+        : "Read-only: log in as the author to edit this page.";
+    } else if (currentUser !== currentAuthor) {
+      contentInput.readOnly = true;
+      titleInput.readOnly = true;
+      saveBtnEl.disabled = true;
+      statusEl.textContent = `Read-only: this page belongs to ${currentAuthor}. You are logged in as ${currentUser}.`;
+    } else {
+      contentInput.readOnly = false;
+      titleInput.readOnly = false;
+      saveBtnEl.disabled = false;
+      statusEl.textContent = "You are the owner of this page. You can edit and publish changes.";
+    }
+  }
+
+  metaUserEl.textContent = currentUser
+    ? (currentUserBanned ? currentUser + " (banned)" : currentUser)
+    : "None";
+}
+
+/* ========= EDITOR TABS & PREVIEW ========= */
+const tabButtons = document.querySelectorAll(".editor-tab");
+const panels = {
+  write: document.getElementById("panel-write"),
+  preview: document.getElementById("panel-preview"),
+  meta: document.getElementById("panel-meta")
+};
+const contentInputEl = document.getElementById("contentInput");
+const previewBoxEl = document.getElementById("editorPreviewBox");
+
+tabButtons.forEach(btn => {
+  btn.addEventListener("click", () => {
+    const tab = btn.dataset.tab;
+    tabButtons.forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    Object.keys(panels).forEach(key => {
+      panels[key].classList.toggle("active", key === tab);
+    });
+    if (tab === "preview") updatePreviewFromEditor();
+    if (tab === "meta") renderHistoryList();
+  });
+});
+
+function updatePreviewFromEditor() {
+  const html = contentInputEl.value.trim();
+  previewBoxEl.innerHTML = html || "(No content yet.)";
+}
+
+/* Toolbar actions */
+document.getElementById("editorToolbar").addEventListener("click", (e) => {
+  const btn = e.target.closest(".toolbar-btn");
+  if (!btn) return;
+  const action = btn.dataset.action;
+  if (action === "fullscreen") {
+    document.body.classList.toggle("editor-fullscreen");
+    return;
+  }
+  const textarea = contentInputEl;
+  const start = textarea.selectionStart;
+  const end = textarea.selectionEnd;
+  const value = textarea.value;
+  const selected = value.slice(start, end);
+  let insert = value;
+  if (action === "bold") {
+    insert = value.slice(0,start) + "<strong>" + selected + "</strong>" + value.slice(end);
+  } else if (action === "italic") {
+    insert = value.slice(0,start) + "<em>" + selected + "</em>" + value.slice(end);
+  } else if (action === "h2") {
+    insert = value.slice(0,start) + "<h2>" + (selected || "Section") + "</h2>\n" + value.slice(end);
+  } else if (action === "h3") {
+    insert = value.slice(0,start) + "<h3>" + (selected || "Subsection") + "</h3>\n" + value.slice(end);
+  } else if (action === "ul") {
+    insert = value.slice(0,start) + "<ul>\n  <li>" + (selected || "Item") + "</li>\n</ul>\n" + value.slice(end);
+  } else if (action === "ol") {
+    insert = value.slice(0,start) + "<ol>\n  <li>" + (selected || "Item") + "</li>\n</ol>\n" + value.slice(end);
+  } else if (action === "clear") {
+    if (confirm("Clear editor content?")) insert = "";
+    else return;
+  }
+  textarea.value = insert;
+  updatePreviewFromEditor();
+  scheduleAutosave();
+});
+
+contentInputEl.addEventListener("input", () => {
+  const activeTab = document.querySelector(".editor-tab.active");
+  if (activeTab && activeTab.dataset.tab === "preview") updatePreviewFromEditor();
+  scheduleAutosave();
+});
+document.getElementById("titleInput").addEventListener("input", scheduleAutosave);
+document.getElementById("categoriesInput").addEventListener("input", scheduleAutosave);
+document.getElementById("tagsInput").addEventListener("input", scheduleAutosave);
+
+/* ========= AUTOSAVE ========= */
+function getDraftKey() {
+  return "ultrawiki_draft_" + (currentSlug || "new");
+}
+function scheduleAutosave() {
+  clearTimeout(autosaveTimer);
+  autosaveTimer = setTimeout(saveDraft, 1200);
+}
+function saveDraft() {
+  const draft = {
+    title: document.getElementById("titleInput").value,
+    content: document.getElementById("contentInput").value,
+    categories: document.getElementById("categoriesInput").value,
+    tags: document.getElementById("tagsInput").value,
+    ts: Date.now()
+  };
+  localStorage.setItem(getDraftKey(), JSON.stringify(draft));
+  document.getElementById("statusText").textContent = "Draft saved locally.";
+}
+function loadDraftIfAny() {
+  const raw = localStorage.getItem(getDraftKey());
+  if (!raw) return;
+  try {
+    const draft = JSON.parse(raw);
+    if (draft.title) document.getElementById("titleInput").value = draft.title;
+    if (draft.content) document.getElementById("contentInput").value = draft.content;
+    if (draft.categories) document.getElementById("categoriesInput").value = draft.categories;
+    if (draft.tags) document.getElementById("tagsInput").value = draft.tags;
+    updatePreviewFromEditor();
+  } catch {}
+}
+
+/* ========= HISTORY (LOCAL ONLY) ========= */
+function getHistoryKey(slug) {
+  if (!slug) return null;
+  return "ultrawiki_hist_" + slug;
+}
+function pushHistoryEntry(slug, title, content) {
+  const key = getHistoryKey(slug);
+  if (!key) return;
+  let hist = getStoredArray(key);
+  hist.unshift({ title, content, ts: Date.now() });
+  setStoredArray(key, hist.slice(0, 5));
+}
+function renderHistoryList() {
+  const box = document.getElementById("historyList");
+  if (!currentSlug) {
+    box.textContent = "(Save this page at least once to start history.)";
+    return;
+  }
+  const key = getHistoryKey(currentSlug);
+  const hist = getStoredArray(key);
+  if (!hist.length) {
+    box.textContent = "(No saved versions yet for this page on this device.)";
+    return;
+  }
+  let html = "";
+  hist.forEach((h, idx) => {
+    const date = new Date(h.ts).toLocaleString();
+    html += `<div>
+      <button type="button" style="font-size:10px;margin-right:4px;" onclick="restoreHistoryVersion(${idx})">Restore</button>
+      <span>${date}</span>
+    </div>`;
+  });
+  box.innerHTML = html;
+}
+function restoreHistoryVersion(index) {
+  const key = getHistoryKey(currentSlug);
+  const hist = getStoredArray(key);
+  const entry = hist[index];
+  if (!entry) return;
+  if (!confirm("Restore this older version into the editor? (You still must click Publish to save it to the server.)")) return;
+  document.getElementById("titleInput").value = entry.title;
+  document.getElementById("contentInput").value = entry.content;
+  updatePreviewFromEditor();
+  document.getElementById("statusText").textContent = "Old version restored into editor. Don't forget to publish.";
+}
+
 /* ========= SAVE PAGE ========= */
 async function savePage() {
   const title = document.getElementById("titleInput").value.trim();
-  const content = document.getElementById("contentInput").value.trim();
+  const contentRaw = document.getElementById("contentInput").value.trim();
+  const catsStr = document.getElementById("categoriesInput").value.trim();
+  const tagsStr = document.getElementById("tagsInput").value.trim();
   const statusEl = document.getElementById("statusText");
 
   if (!currentUser) {
@@ -1141,126 +2139,66 @@ async function savePage() {
     alert("Your account is banned.");
     return;
   }
-  if (!title || !content) {
+  if (!title || !contentRaw) {
     statusEl.textContent = "Title and content required.";
     return;
   }
-
-  // Ownership enforcement on client side
   if (currentSlug && currentAuthor && currentAuthor !== currentUser) {
     statusEl.textContent = "You are not the owner of this page.";
     alert("Only the original author can edit this page.");
     return;
   }
 
+  const categories = catsStr ? catsStr.split(",").map(s => s.trim()).filter(Boolean) : [];
+  const tags = tagsStr ? tagsStr.split(",").map(s => s.trim()).filter(Boolean) : [];
+  const metaBlock = `<!--meta:${JSON.stringify({categories, tags})}-->`;
+  const contentToSave = metaBlock + "\n" + contentRaw;
+
   statusEl.textContent = "Saving…";
 
   try {
-    /* IMPORTANT:
-       Backend should accept author (and optionally slug) like:
-       POST /api/save { "title": "...", "content": "...", "author": "username", "slug": currentSlug }
-       Adjust your FastAPI code accordingly.
-    */
-    const payload = {
-      title,
-      content,
-      author: currentUser
-    };
-    if (currentSlug) {
-      payload.slug = currentSlug;
-    }
+    const payload = { title, content: contentToSave, author: currentUser };
+    const isNew = !currentSlug;
+    if (currentSlug) payload.slug = currentSlug;
 
     const data = await apiPost("/save", payload);
     statusEl.textContent = "Saved!";
+    incrementAchievement("ultrawiki_ach_saves");
+    if (isNew) incrementAchievement("ultrawiki_ach_pages");
+
     await loadPages();
     if (data.slug) {
+      if (currentSlug) pushHistoryEntry(currentSlug, title, contentRaw);
+      currentSlug = data.slug;
       openPage(data.slug);
+      metaSlugEl.textContent = data.slug;
     }
+    triggerConfetti();
+    localStorage.removeItem(getDraftKey());
   } catch (err) {
     console.error(err);
     statusEl.textContent = "Error while saving.";
   }
 }
-
-/* ========= TEMPLATES ========= */
-const templateSelectEl = document.getElementById("templateSelect");
-templateSelectEl.addEventListener("change", () => {
-  const val = templateSelectEl.value;
-  if (!val) return;
-  if (!confirm("Replace content with template?")) return;
-
-  let tpl = "";
-  if (val === "bio") {
-    tpl = `<h2>Early Life</h2>
-<p>Write about the person's background, where they were born, and key early experiences.</p>
-<h2>Career</h2>
-<p>Describe the main work, achievements, and milestones.</p>
-<h2>Legacy</h2>
-<p>Explain why this person matters and how they are remembered.</p>`;
-  } else if (val === "game") {
-    tpl = `<h2>Overview</h2>
-<p>Describe what the game or map is, its genre, and main objective.</p>
-<h2>Gameplay</h2>
-<ul>
-  <li>Core mechanics</li>
-  <li>Controls</li>
-  <li>Progression systems</li>
-</ul>
-<h2>Maps / Levels</h2>
-<p>Detail key locations, maps, or regions.</p>`;
-  } else if (val === "lore") {
-    tpl = `<h2>Origin</h2>
-<p>Explain where this creature, character, or entity comes from.</p>
-<h2>Appearance</h2>
-<p>Describe what it looks like in detail.</p>
-<h2>Abilities</h2>
-<ul>
-  <li>Ability one</li>
-  <li>Ability two</li>
-</ul>
-<h2>Weaknesses</h2>
-<p>Mention known weaknesses or limits.</p>`;
-  } else if (val === "guide") {
-    tpl = `<h2>Introduction</h2>
-<p>Briefly explain what this guide helps with.</p>
-<h2>Steps</h2>
-<ol>
-  <li>Step one</li>
-  <li>Step two</li>
-  <li>Step three</li>
-</ol>
-<h2>Tips</h2>
-<ul>
-  <li>Tip 1</li>
-  <li>Tip 2</li>
-</ul>`;
-  }
-  document.getElementById("contentInput").value = tpl;
-});
+saveBtnEl.addEventListener("click", savePage);
 
 /* ========= SEARCH ========= */
 const searchBox = document.getElementById("searchBox");
 const searchResultsEl = document.getElementById("searchResults");
-
 searchBox.addEventListener("input", () => {
   const q = searchBox.value.trim().toLowerCase();
   renderPageList(q);
   updateSearchResults(q);
 });
-
 function updateSearchResults(q) {
-  if (!q) {
-    searchResultsEl.style.display = "none";
-    return;
-  }
+  if (!q) { searchResultsEl.style.display = "none"; return; }
   const matches = allPages.filter(p => p.title.toLowerCase().includes(q));
-  if (!matches.length) {
-    searchResultsEl.style.display = "none";
-    return;
-  }
+  if (!matches.length) { searchResultsEl.style.display = "none"; return; }
   let html = "";
   matches.forEach(p => {
-    html += `<div class="search-item" onclick="openPage('${p.slug}');hideSearchResults();">${p.title}</div>`;
+    html += `<div class="search-item" onclick="openPage('${p.slug}');hideSearchResults();">
+      <span>${p.title}</span><span class="search-pill">open</span>
+    </div>`;
   });
   searchResultsEl.innerHTML = html;
   searchResultsEl.style.display = "block";
@@ -1269,24 +2207,28 @@ function hideSearchResults() {
   searchResultsEl.style.display = "none";
 }
 
-/* ========= RANDOM PAGE ========= */
+/* ========= RANDOM ========= */
 function randomPage() {
   if (!allPages.length) return;
   const rand = allPages[Math.floor(Math.random() * allPages.length)];
   openPage(rand.slug);
 }
 
-/* ========= PREVIEW ON HOVER ========= */
+/* ========= HOVER PREVIEW ========= */
 const previewCard = document.getElementById("previewCard");
 let previewTimeout = null;
-
 async function showPreview(slug, evt) {
   clearTimeout(previewTimeout);
   previewTimeout = setTimeout(async () => {
     try {
       const data = await apiGet("/get/" + encodeURIComponent(slug));
       const page = data.page;
-      const txt = (page.content || "").replace(/<[^>]+>/g,' ').slice(0,160);
+      let content = page.content || "";
+      if (content.startsWith("<!--meta:")) {
+        const end = content.indexOf("-->");
+        if (end !== -1) content = content.substring(end + 3);
+      }
+      const txt = content.replace(/<[^>]+>/g,' ').slice(0,160);
       previewCard.innerHTML = `<strong>${page.title}</strong><br><span style="color:var(--text-muted);font-size:11px;">${page.updated || ""}</span><br><br>${txt}…`;
       previewCard.style.display = "block";
       const rect = evt.target.getBoundingClientRect();
@@ -1302,57 +2244,52 @@ function hidePreview() {
   previewCard.style.display = "none";
 }
 
-/* ========= SCROLL STUFF ========= */
+/* ========= SCROLL / MISC ========= */
 const articleViewEl = document.getElementById("articleView");
 const scrollProgressEl = document.getElementById("scrollProgress");
 const backTopBtn = document.getElementById("backTop");
-
 articleViewEl.addEventListener("scroll", () => {
   const scrollTop = articleViewEl.scrollTop;
   const max = articleViewEl.scrollHeight - articleViewEl.clientHeight;
   const p = max > 0 ? (scrollTop / max) * 100 : 0;
   scrollProgressEl.style.width = p + "%";
-
-  if (scrollTop > 200) backTopBtn.style.display = "block";
-  else backTopBtn.style.display = "none";
+  backTopBtn.style.display = scrollTop > 200 ? "block" : "none";
 });
-
 function scrollToTop() {
   articleViewEl.scrollTo({top: 0, behavior: "smooth"});
 }
-
-/* ========= MISC ACTIONS ========= */
-function printArticle() {
-  window.print();
-}
+function printArticle() { window.print(); }
 function shareArticle() {
   if (!currentSlug) return;
   const url = location.origin + location.pathname + "?page=" + encodeURIComponent(currentSlug);
-  navigator.clipboard.writeText(url).then(() => {
-    alert("Link copied: " + url);
-  });
+  navigator.clipboard.writeText(url).then(() => alert("Link copied: " + url));
 }
 function focusNewPage() {
   currentSlug = null;
   currentAuthor = null;
   document.getElementById("titleInput").value = "";
   document.getElementById("contentInput").value = "";
+  document.getElementById("categoriesInput").value = "";
+  document.getElementById("tagsInput").value = "";
   document.getElementById("viewTitle").textContent = "New page (unsaved)";
   document.getElementById("viewBody").innerHTML = "<p>Start writing your new page in the editor on the right.</p>";
   document.getElementById("viewMeta").textContent = "Unsaved draft.";
   document.getElementById("authorLine").innerHTML = "Author: <em>" + (currentUser || "Unknown") + "</em>";
+  metaSlugEl.textContent = "(new)";
+  metaAuthorEl.textContent = currentUser || "Unknown";
   generateTOC();
   enforceOwnershipOnEditor();
+  updatePreviewFromEditor();
+  updateFavButton();
+  setTimeout(loadDraftIfAny, 50);
   document.getElementById("titleInput").focus();
 }
-function newPageFromSidebar() {
-  focusNewPage();
-}
+function newPageFromSidebar() { focusNewPage(); }
 function showShortcutHint() {
   alert("Shortcuts:\n\n/ – focus search\nN – new page\nR – random page");
 }
 
-/* ========= KEYBOARD SHORTCUTS ========= */
+/* Keyboard shortcuts */
 document.addEventListener("keydown", (e) => {
   if (e.key === "/") {
     e.preventDefault();
@@ -1364,23 +2301,43 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
-/* ========= SAVE BUTTON ========= */
-saveBtnEl.addEventListener("click", savePage);
+/* ========= CONFETTI ========= */
+function triggerConfetti() {
+  for (let i = 0; i < 25; i++) {
+    const div = document.createElement("div");
+    div.className = "confetti-piece";
+    const hue = Math.floor(Math.random() * 360);
+    div.style.background = `hsl(${hue}, 90%, 60%)`;
+    div.style.left = Math.random() * 100 + "vw";
+    div.style.top = "-10px";
+    div.style.setProperty("--x-move", (Math.random() * 40 - 20) + "vw");
+    const duration = 1.5 + Math.random();
+    div.style.animationDuration = duration + "s";
+    document.body.appendChild(div);
+    setTimeout(() => div.remove(), duration * 1000);
+  }
+}
 
-/* ========= HANDLE ?page= IN URL ========= */
+/* ========= INIT ========= */
 async function handleInitialPage() {
   await tryAutoLogin();
   await loadPages();
+  renderFavorites();
+  renderRecent();
+  updateAchievementsDisplay();
+
   const params = new URLSearchParams(location.search);
   const slug = params.get("page");
   if (slug) {
     openPage(slug);
   } else {
     enforceOwnershipOnEditor();
+    metaSlugEl.textContent = "(new)";
+    metaAuthorEl.textContent = "System";
+    loadDraftIfAny();
   }
+  updateFavButton();
 }
-
-/* INIT */
 handleInitialPage();
 </script>
 </body>
