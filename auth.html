@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>UltraWiki — Access Portal</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<style>
+/* =============== RESET =============== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* =============== BACKGROUND =============== */
+body {
+  min-height: 100vh;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: radial-gradient(circle at top, #020617 0, #020617 35%, #000 100%);
+  color: #e5e7eb;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* animated gradient overlay */
+body::before {
+  content: "";
+  position: fixed;
+  inset: -50%;
+  background: conic-gradient(
+    from 120deg,
+    rgba(34,211,238,0.12),
+    rgba(168,85,247,0.12),
+    rgba(56,189,248,0.12),
+    rgba(34,197,94,0.08),
+    rgba(59,130,246,0.12),
+    rgba(34,211,238,0.12)
+  );
+  filter: blur(60px);
+  opacity: 0.9;
+  animation: spinGradient 48s linear infinite;
+  z-index: -3;
+}
+
+/* star dots */
+.bg-stars {
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 10% 20%, rgba(255,255,255,0.16) 0, transparent 60%),
+    radial-gradient(circle at 80% 0%, rgba(255,255,255,0.12) 0, transparent 55%),
+    radial-gradient(circle at 0% 80%, rgba(56,189,248,0.22) 0, transparent 50%);
+  mix-blend-mode: screen;
+  opacity: 0.35;
+  z-index: -2;
+}
+
+/* subtle grid */
+.bg-grid {
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(148,163,184,0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148,163,184,0.12) 1px, transparent 1px);
+  background-size: 40px 40px;
+  opacity: 0.16;
+  transform: perspective(900px) rotateX(58deg) translateY(24vh) scale(1.4);
+  transform-origin: top;
+  z-index: -1;
+}
+
+/* floating orbs */
+.orb {
+  position: fixed;
+  width: 260px;
+  height: 260px;
+  border-radius: 999px;
+  background: radial-gradient(circle at 30% 20%, rgba(244,244,245,0.98), transparent 60%);
+  filter: blur(4px);
+  opacity: 0.1;
+  mix-blend-mode: screen;
+  pointer-events: none;
+  z-index: -1;
+}
+.orb-1 { top: 10%; left: 10%; animation: floatOrb1 20s ease-in-out infinite alternate; }
+.orb-2 { bottom: 6%; right: 8%; animation: floatOrb2 26s ease-in-out infinite alternate; }
+.orb-3 { top: 55%; left: 60%; animation: floatOrb3 32s ease-in-out infinite alternate; }
+
+/* =============== WRAPPER & CARD =============== */
+.auth-wrapper {
+  position: relative;
+  padding: 18px;
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-card {
+  width: 100%;
+  padding: 26px 24px 22px;
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at top left, rgba(30,64,175,0.8), rgba(15,23,42,0.95)),
+    linear-gradient(135deg, rgba(15,23,42,0.95), rgba(15,23,42,0.96));
+  border: 1px solid rgba(148,163,184,0.5);
+  box-shadow:
+    0 24px 80px rgba(15,23,42,0.9),
+    0 0 0 1px rgba(15,23,42,0.8);
+  backdrop-filter: blur(26px);
+  position: relative;
+  overflow: hidden;
+  transform: translateY(10px) scale(0.98);
+  opacity: 0;
+  animation: cardIn 0.6s ease-out forwards;
+}
+
+/* neon edge border */
+.auth-card::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  border: 1px solid transparent;
+  background: linear-gradient(135deg, #22d3ee, #a855f7, #22c55e) border-box;
+  -webkit-mask:
+    linear-gradient(#000 0 0) padding-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+/* scanline */
+.scanline {
+  position: absolute;
+  inset: -40%;
+  background: linear-gradient(
+    to bottom,
+    transparent 0,
+    rgba(148,163,184,0.14) 48%,
+    rgba(148,163,184,0.32) 50%,
+    rgba(148,163,184,0.14) 52%,
+    transparent 100%
+  );
+  mix-blend-mode: screen;
+  animation: scanDown 8s linear infinite;
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+/* inner glow */
+.auth-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 40px rgba(15,23,42,0.9);
+  pointer-events: none;
+}
+
+/* =============== TYPOGRAPHY =============== */
+.auth-title {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-align: center;
+  color: #e5e7eb;
+  margin-bottom: 4px;
+}
+.auth-sub {
+  font-size: 12px;
+  text-align: center;
+  color: #9ca3af;
+  margin-bottom: 18px;
+}
+
+/* =============== TABS =============== */
+.auth-tabs {
+  display: inline-flex;
+  padding: 3px;
+  border-radius: 999px;
+  background: rgba(15,23,42,0.85);
+  border: 1px solid rgba(148,163,184,0.5);
+  margin: 0 auto 18px;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.auth-tab {
+  min-width: 110px;
+  padding: 7px 16px;
+  border-radius: 999px;
+  border: none;
+  background: transparent;
+  color: #cbd5f5;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease, transform 0.15s, box-shadow 0.15s;
+}
+.auth-tab.active {
+  background: radial-gradient(circle at top, rgba(37,99,235,0.95), rgba(30,64,175,0.96));
+  color: #e5e7eb;
+  box-shadow: 0 12px 28px rgba(15,23,42,0.9);
+  transform: translateY(-1px);
+}
+
+/* =============== FORM =============== */
+#authForm {
+  position: relative;
+}
+
+.field {
+  margin-bottom: 12px;
+}
+.field label {
+  display: block;
+  font-size: 12px;
+  color: #cbd5f5;
+  margin-bottom: 4px;
+}
+
+/* inputs */
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  border-radius: 999px;
+  border: 1px solid rgba(148,163,184,0.7);
+  background: radial-gradient(circle at top left, rgba(15,23,42,0.98), rgba(15,23,42,0.94));
+  color: #e5e7eb;
+  padding: 9px 12px;
+  font-size: 13px;
+  outline: none;
+  box-shadow: 0 8px 24px rgba(15,23,42,0.9);
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.15s ease,
+    background 0.18s ease;
+}
+input::placeholder {
+  color: #6b7280;
+}
+input:focus {
+  border-color: #22d3ee;
+  box-shadow: 0 14px 38px rgba(56,189,248,0.8);
+  transform: translateY(-1px);
+}
+
+/* password wrapper */
+.password-wrap {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+.password-wrap input {
+  padding-right: 40px;
+}
+.toggle-pass {
+  position: absolute;
+  right: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: transform 0.12s, opacity 0.12s;
+}
+.toggle-pass:hover {
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+/* strength bar */
+#strengthWrap {
+  margin-top: 6px;
+  height: 6px;
+  width: 100%;
+  border-radius: 999px;
+  background: rgba(15,23,42,0.9);
+  overflow: hidden;
+  box-shadow: inset 0 0 0 1px rgba(30,64,175,0.7);
+  display: none;
+}
+#strengthBar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #ef4444, #f97316, #22c55e);
+  box-shadow: 0 0 12px rgba(34,197,94,0.8);
+  transition: width 0.18s ease-out, filter 0.18s, box-shadow 0.18s;
+}
+
+/* submit button */
+.auth-submit {
+  appearance: none;
+  border: none;
+  width: 100%;
+  margin-top: 8px;
+  border-radius: 999px;
+  padding: 10px 0;
+  background: linear-gradient(135deg, #22d3ee, #a855f7);
+  color: #f9fafb;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow:
+    0 18px 40px rgba(15,23,42,0.95),
+    0 0 22px rgba(56,189,248,0.7);
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    filter 0.15s ease,
+    background 0.18s;
+  position: relative;
+  overflow: hidden;
+}
+.auth-submit:hover:not([disabled]) {
+  transform: translateY(-1px) scale(1.01);
+  filter: brightness(1.06);
+}
+.auth-submit[disabled] {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+/* loader */
+#submitLoader {
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  border: 2px solid rgba(15,23,42,0.1);
+  border-top-color: #0f172a;
+  border-right-color: #0f172a;
+  display: none;
+  animation: spinLoader 0.7s linear infinite;
+}
+
+/* messages */
+#errorMsg,
+#successMsg {
+  margin-top: 8px;
+  min-height: 16px;
+  font-size: 12px;
+  text-align: center;
+}
+#errorMsg {
+  color: #fecaca;
+}
+#successMsg {
+  color: #bbf7d0;
+}
+
+/* return link */
+.return-link {
+  margin-top: 14px;
+  font-size: 12px;
+  text-align: center;
+  color: #9ca3af;
+}
+.return-link a {
+  color: #bfdbfe;
+  text-decoration: none;
+}
+.return-link a:hover {
+  text-decoration: underline;
+}
+
+/* =============== STATES & EFFECTS =============== */
+.auth-card.shake {
+  animation: shake 0.36s ease;
+}
+.auth-card.error-glow {
+  box-shadow:
+    0 0 40px rgba(248,113,113,0.45),
+    0 24px 80px rgba(15,23,42,0.9);
+}
+.auth-card.success-glow {
+  box-shadow:
+    0 0 40px rgba(45,212,191,0.6),
+    0 28px 100px rgba(15,23,42,0.95);
+}
+
+/* =============== RESPONSIVE =============== */
+@media (max-width: 520px) {
+  .auth-card {
+    padding: 22px 18px 18px;
+    border-radius: 18px;
+  }
+  .auth-title {
+    font-size: 19px;
+  }
+}
+
+/* =============== ANIMATIONS =============== */
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+@keyframes scanDown {
+  from { transform: translate3d(0,-40%,0); }
+  to   { transform: translate3d(0,40%,0); }
+}
+@keyframes spinLoader {
+  to { transform: rotate(360deg); }
+}
+@keyframes shake {
+  20% { transform: translateX(-8px); }
+  40% { transform: translateX(7px); }
+  60% { transform: translateX(-5px); }
+  80% { transform: translateX(3px); }
+  100% { transform: translateX(0); }
+}
+@keyframes spinGradient {
+  to { transform: rotate(360deg); }
+}
+@keyframes floatOrb1 {
+  0% { transform: translate3d(0,0,0); }
+  100% { transform: translate3d(10px,26px,0); }
+}
+@keyframes floatOrb2 {
+  0% { transform: translate3d(0,0,0); }
+  100% { transform: translate3d(-18px,-24px,0); }
+}
+@keyframes floatOrb3 {
+  0% { transform: translate3d(0,0,0); }
+  100% { transform: translate3d(22px,-20px,0); }
+}
+</style>
+</head>
+<body>
+
+<div class="bg-stars"></div>
+<div class="bg-grid"></div>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+
+<div class="auth-wrapper">
+  <div class="auth-card" id="authCard">
+    <div class="scanline"></div>
+
+    <div class="auth-title">UltraWiki Access Portal</div>
+    <div class="auth-sub">Secure sign-in for UltraWiki · FM Radio · Linked tools</div>
+
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tabLogin">Log in</button>
+      <button class="auth-tab" id="tabSignup">Sign up</button>
+    </div>
+
+    <form id="authForm">
+      <div class="field">
+        <label for="username">Username</label>
+        <input id="username" type="text" autocomplete="username" placeholder="yourname">
+      </div>
+
+      <div class="field">
+        <label for="password">Password</label>
+        <div class="password-wrap">
+          <input id="password" type="password" autocomplete="current-password" placeholder="••••••••">
+          <div class="toggle-pass" id="togglePass" title="Show/Hide password">👁</div>
+        </div>
+        <div id="strengthWrap">
+          <div id="strengthBar"></div>
+        </div>
+      </div>
+
+      <div class="field" id="confirmWrap" style="display:none;">
+        <label for="password2">Confirm password</label>
+        <input id="password2" type="password" autocomplete="new-password" placeholder="Repeat password">
+      </div>
+
+      <button type="submit" class="auth-submit" id="submitBtn">
+        <span id="submitText">Log in</span>
+        <span id="submitLoader"></span>
+      </button>
+
+      <div id="errorMsg"></div>
+      <div id="successMsg"></div>
+    </form>
+
+    <div class="return-link">
+      <a href="index.html">← Return to UltraWiki</a>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ========= CONFIG ========= */
+const LOGIN_API = "https://login-api-iwy1.onrender.com";
+
+/* ========= ELEMENTS ========= */
+const authCard      = document.getElementById("authCard");
+const tabLogin      = document.getElementById("tabLogin");
+const tabSignup     = document.getElementById("tabSignup");
+const authForm      = document.getElementById("authForm");
+const usernameInput = document.getElementById("username");
+const passwordInput = document.getElementById("password");
+const password2Input= document.getElementById("password2");
+const confirmWrap   = document.getElementById("confirmWrap");
+const strengthWrap  = document.getElementById("strengthWrap");
+const strengthBar   = document.getElementById("strengthBar");
+const togglePass    = document.getElementById("togglePass");
+const submitBtn     = document.getElementById("submitBtn");
+const submitText    = document.getElementById("submitText");
+const submitLoader  = document.getElementById("submitLoader");
+const errorMsgEl    = document.getElementById("errorMsg");
+const successMsgEl  = document.getElementById("successMsg");
+
+let mode = "login";
+
+/* ========= MODE SWITCH ========= */
+function setMode(newMode) {
+  mode = newMode;
+  tabLogin.classList.toggle("active", mode === "login");
+  tabSignup.classList.toggle("active", mode === "signup");
+
+  if (mode === "login") {
+    confirmWrap.style.display = "none";
+    strengthWrap.style.display = "none";
+    submitText.textContent = "Log in";
+    successMsgEl.textContent = "";
+  } else {
+    confirmWrap.style.display = "block";
+    strengthWrap.style.display = "block";
+    submitText.textContent = "Create account";
+    successMsgEl.textContent = "";
+  }
+
+  errorMsgEl.textContent = "";
+}
+
+tabLogin.addEventListener("click", () => setMode("login"));
+tabSignup.addEventListener("click", () => setMode("signup"));
+
+/* ========= SHOW / HIDE PASSWORD ========= */
+let passVisible = false;
+togglePass.addEventListener("click", () => {
+  passVisible = !passVisible;
+  passwordInput.type = passVisible ? "text" : "password";
+  if (password2Input) {
+    password2Input.type = passVisible ? "text" : "password";
+  }
+  togglePass.textContent = passVisible ? "🙈" : "👁";
+});
+
+/* ========= PASSWORD STRENGTH ========= */
+function calcStrength(pw) {
+  let score = 0;
+  if (pw.length >= 6) score++;
+  if (pw.length >= 10) score++;
+  if (/[A-Z]/.test(pw)) score++;
+  if (/[0-9]/.test(pw)) score++;
+  if (/[^A-Za-z0-9]/.test(pw)) score++;
+  return Math.min(score, 4); // 0-4
+}
+
+function updateStrengthBar() {
+  if (mode !== "signup") return;
+  const pw = passwordInput.value;
+  const score = calcStrength(pw);
+
+  let width = "0%";
+  let glow = "0 0 0 rgba(0,0,0,0)";
+  if (score === 0) {
+    width = "10%";
+    glow = "0 0 12px rgba(248,113,113,0.8)";
+  } else if (score === 1) {
+    width = "30%";
+    glow = "0 0 12px rgba(248,113,113,0.8)";
+  } else if (score === 2) {
+    width = "55%";
+    glow = "0 0 12px rgba(251,191,36,0.9)";
+  } else if (score === 3) {
+    width = "80%";
+    glow = "0 0 12px rgba(52,211,153,0.9)";
+  } else if (score === 4) {
+    width = "100%";
+    glow = "0 0 16px rgba(45,212,191,1)";
+  }
+  strengthBar.style.width = width;
+  strengthBar.style.boxShadow = glow;
+  strengthBar.style.filter = score <= 1 ? "hue-rotate(0deg)" : score === 2 ? "hue-rotate(20deg)" : "hue-rotate(60deg)";
+}
+
+passwordInput.addEventListener("input", updateStrengthBar);
+
+/* ========= LOADING STATE ========= */
+function setLoading(isLoading) {
+  if (isLoading) {
+    submitBtn.disabled = true;
+    submitLoader.style.display = "inline-block";
+    submitText.textContent = mode === "login" ? "Signing in…" : "Creating…";
+  } else {
+    submitBtn.disabled = false;
+    submitLoader.style.display = "none";
+    submitText.textContent = mode === "login" ? "Log in" : "Create account";
+  }
+}
+
+/* ========= ERROR / SUCCESS UI ========= */
+function showError(msg) {
+  errorMsgEl.textContent = msg;
+  successMsgEl.textContent = "";
+  authCard.classList.remove("success-glow");
+  authCard.classList.add("shake", "error-glow");
+  setTimeout(() => authCard.classList.remove("shake"), 360);
+  setTimeout(() => authCard.classList.remove("error-glow"), 600);
+}
+
+function showSuccess(msg) {
+  successMsgEl.textContent = msg;
+  errorMsgEl.textContent = "";
+  authCard.classList.add("success-glow");
+}
+
+/* ========= API CALL HELPERS ========= */
+async function apiLogin(username, password) {
+  const body = new URLSearchParams();
+  body.append("username", username);
+  body.append("password", password);
+
+  const res = await fetch(`${LOGIN_API}/login`, {
+    method: "POST",
+    body
+  });
+
+  if (!res.ok) {
+    let err;
+    try { err = await res.json(); } catch { err = {}; }
+    throw new Error(err.detail || "Login failed");
+  }
+  return res.json();
+}
+
+async function apiSignup(username, password) {
+  const body = new URLSearchParams();
+  body.append("username", username);
+  body.append("password", password);
+
+  const res = await fetch(`${LOGIN_API}/signup`, {
+    method: "POST",
+    body
+  });
+  if (!res.ok) {
+    let err;
+    try { err = await res.json(); } catch { err = {}; }
+    throw new Error(err.detail || "Signup failed");
+  }
+  return res.json();
+}
+
+/* ========= FORM SUBMIT ========= */
+authForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  errorMsgEl.textContent = "";
+  successMsgEl.textContent = "";
+
+  const username = usernameInput.value.trim();
+  const password = passwordInput.value;
+  const password2 = password2Input.value;
+
+  if (!username || !password) {
+    showError("Please enter both username and password.");
+    return;
+  }
+  if (mode === "signup" && password !== password2) {
+    showError("Passwords do not match.");
+    return;
+  }
+
+  setLoading(true);
+
+  try {
+    if (mode === "signup") {
+      await apiSignup(username, password);
+      await apiLogin(username, password);
+      showSuccess("Account created. Redirecting…");
+    } else {
+      await apiLogin(username, password);
+      showSuccess("Welcome back. Redirecting…");
+    }
+
+    localStorage.setItem("ultrawiki_user", username);
+    localStorage.setItem("ultrawiki_pass", password);
+
+    setTimeout(() => {
+      window.location.href = "index.html";
+    }, 1000);
+  } catch (err) {
+    showError(err.message || "Authentication failed.");
+  } finally {
+    setLoading(false);
+  }
+});
+
+/* ========= SIMPLE PARALLAX ========= */
+document.addEventListener("mousemove", (e) => {
+  const { innerWidth: w, innerHeight: h } = window;
+  const x = (e.clientX / w) - 0.5;
+  const y = (e.clientY / h) - 0.5;
+
+  const moveCardX = x * -6;
+  const moveCardY = y * -6;
+  authCard.style.transform = `translate(${moveCardX}px, ${moveCardY + 0}px) scale(1)`;
+
+  document.querySelectorAll(".orb").forEach((orb, idx) => {
+    const factor = (idx + 1) * 10;
+    orb.style.transform = `translate(${x * factor}px, ${y * factor}px)`;
+  });
+});
+</script>
+</body>
+</html>
