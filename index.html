@@ -1171,8 +1171,8 @@ body.editor-fullscreen .editor {
     <button class="header-btn" onclick="randomPage()" title="Random page (R)">🎲 Random</button>
 
     <div class="auth-status" id="authStatus">Not logged in</div>
-    <button class="auth-btn" id="loginBtn" onclick="promptLogin()">Log in</button>
-    <button class="auth-btn" id="signupBtn" onclick="promptSignup()">Sign up</button>
+    <button class="auth-btn" id="loginBtn" onclick="location.href='/auth'">Log in</button>
+    <button class="auth-btn" id="signupBtn" onclick="location.href='/auth?mode=signup'">Sign up</button>
     <button class="auth-btn" id="logoutBtn" onclick="logoutUser()" style="display:none;">Log out</button>
   </div>
 </header>
@@ -1348,46 +1348,7 @@ body.editor-fullscreen .editor {
 <button id="fabNew" onclick="focusNewPage()">＋ New Page (N)</button>
 <button id="backTop" onclick="scrollToTop()">▲ Top</button>
 
-<!-- AUTH MODAL -->
-<div id="authModal" class="auth-modal">
-  <div class="auth-backdrop"></div>
-  <div class="auth-card">
-    <div class="auth-header-row">
-      <div>
-        <div class="auth-title" id="authCardTitle">Log in to UltraWiki</div>
-        <div class="auth-sub">Use your FM Radio / UltraWiki account.</div>
-      </div>
-      <button class="auth-close-btn" type="button" onclick="closeAuthModal()">✕</button>
-    </div>
-    <div class="auth-tabs-row">
-      <button type="button" id="authTabLogin" class="auth-tab active">Log in</button>
-      <button type="button" id="authTabSignup" class="auth-tab">Sign up</button>
-    </div>
-    <form id="authForm" class="auth-form">
-      <label for="authUsername">Username</label>
-      <input id="authUsername" class="auth-input" type="text" autocomplete="username">
 
-      <label for="authPassword">Password</label>
-      <input id="authPassword" class="auth-input" type="password" autocomplete="current-password">
-
-      <div id="confirmGroup">
-        <label for="authConfirm">Confirm password</label>
-        <input id="authConfirm" class="auth-input" type="password" autocomplete="new-password">
-      </div>
-
-      <label class="auth-remember">
-        <input type="checkbox" id="authRemember" checked>
-        <span>Remember me on this device</span>
-      </label>
-
-      <button type="submit" id="authSubmitBtn" class="auth-submit-btn">Log in</button>
-      <div id="authError" class="auth-error"></div>
-      <div class="auth-foot">Your credentials are sent securely to the UltraWiki / FM Radio login API.</div>
-    </form>
-  </div>
-</div>
-
-<div id="previewCard"></div>
 
 <script>
 /* ========= CONFIG ========= */
@@ -1536,8 +1497,7 @@ function closeAuthModal() {
 }
 
 /* Replace old prompt-based actions */
-function promptLogin() { openAuthModal("login"); }
-function promptSignup() { openAuthModal("signup"); }
+
 
 /* Tab switch */
 authTabLoginEl.addEventListener("click", () => {
